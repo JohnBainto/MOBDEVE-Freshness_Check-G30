@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Freshness Check</string>
+    <string name="items">Items</string>
+    <string name="item_lists">Item Lists</string>
 </resources>
