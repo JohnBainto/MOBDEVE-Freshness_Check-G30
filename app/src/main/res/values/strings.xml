@@ -7,4 +7,6 @@
     <string name="sort">sort</string>
     <string name="search">search</string>
     <string name="add_item">add item</string>
+    <string name="app_label">Freshness Check</string>
+    <string name="search_hint">Search</string>
 </resources>
