@@ -6,4 +6,5 @@
     <string name="sort_by_item_expiration">Sort by Item Expiration</string>
     <string name="sort">sort</string>
     <string name="search">search</string>
+    <string name="add_item">add item</string>
 </resources>
