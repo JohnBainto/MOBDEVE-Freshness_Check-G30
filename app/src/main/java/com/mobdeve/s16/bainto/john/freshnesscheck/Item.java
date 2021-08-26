@@ -1,5 +1,6 @@
 package com.mobdeve.s16.bainto.john.freshnesscheck;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public class Item {
@@ -26,7 +27,7 @@ public class Item {
         return category;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public String getDate() {
+        return date.toString();
     }
 }
