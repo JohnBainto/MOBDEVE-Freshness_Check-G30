@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="8dp"
@@ -9,13 +10,31 @@
     android:layout_marginBottom="8dp"
     android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/item_details_back_btn"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        android:adjustViewBounds="true"
-        android:backgroundTint="#00FFFFFF"
-        app:srcCompat="@drawable/ic_back_foreground" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <ImageButton
+            android:id="@+id/item_details_back_btn"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:adjustViewBounds="true"
+            android:backgroundTint="#00FFFFFF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back_foreground" />
+
+        <ImageButton
+            android:id="@+id/item_details_edit_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:backgroundTint="#00FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_edit_foreground" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/item_details_name_tv"
@@ -53,4 +72,5 @@
         android:textColor="@color/green"
         android:text="Item Lists"
         android:textSize="24sp" />
+
 </LinearLayout>

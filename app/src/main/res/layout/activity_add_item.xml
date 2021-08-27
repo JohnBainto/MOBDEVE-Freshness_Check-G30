@@ -57,7 +57,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:inputType="date" />
+        android:hint="Expiry Date"
+        android:inputType="date"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/add_item_category_tv"

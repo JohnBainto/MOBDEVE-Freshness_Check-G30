@@ -7,14 +7,14 @@
 
     <ImageButton
         android:id="@+id/liBackBtn"
-        tools:srcCompat="@drawable/ic_back_foreground"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:backgroundTint="#00FFFFFF"
         android:focusableInTouchMode="false"
         android:src="@drawable/ic_back_foreground"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_back_foreground" />
 
     <TextView
         android:id="@+id/nameTv"
