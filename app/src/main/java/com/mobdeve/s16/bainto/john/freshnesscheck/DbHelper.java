@@ -11,6 +11,7 @@ import androidx.annotation.RequiresApi;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DbHelper extends SQLiteOpenHelper {
     public static DbHelper instance = null;
@@ -348,6 +349,36 @@ public class DbHelper extends SQLiteOpenHelper {
         c.close();
 
         return result;
+    }
+
+    public void updateItemName(String newName, long id, String oldName) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        String query = "UPDATE " + DbReferences.TABLE_NAME_ITEMS + " SET " + DbReferences.COLUMN_ITEM_NAME + " = '" + newName + "' WHERE " + DbReferences.ITEM_ID + " = '" + id + "'"
+                + " AND " + DbReferences.COLUMN_ITEM_NAME + " = '" + oldName + "'";
+    }
+
+    public void updateItemCategory(String newCategory, long id, String oldCategory) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        String query = "UPDATE " + DbReferences.TABLE_NAME_ITEMS + " SET " + DbReferences.COLUMN_ITEM_CATEGORY + " = '" + newCategory + "' WHERE " + DbReferences.ITEM_ID + " = '" + id + "'"
+                + " AND " + DbReferences.COLUMN_ITEM_CATEGORY + " = '" + oldCategory + "'";
+    }
+
+    public void updateItemExpiration(String newDate, long id, String oldDate) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        String query = "UPDATE " + DbReferences.TABLE_NAME_ITEMS + " SET " + DbReferences.COLUMN_ITEM_LOCAL_DATE + " = '" + newDate + "' WHERE " + DbReferences.ITEM_ID + " = '" + id + "'"
+                + " AND " + DbReferences.COLUMN_ITEM_LOCAL_DATE + " = '" + oldDate + "'";
+    }
+
+    public void updateListName(String newName, long id, String oldName) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        String query = "UPDATE " + DbReferences.TABLE_NAME_LISTS + " SET " + DbReferences.COLUMN_LIST_NAME + " = '" + newName + "' WHERE " + DbReferences.LIST_ID + " = '" + id + "'"
+                + " AND " + DbReferences.COLUMN_LIST_NAME + " = '" + oldName + "'";
+    }
+
+    public void updateListItems(String newItems, long id, String oldItems) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        String query = "UPDATE " + DbReferences.TABLE_NAME_LISTS + " SET " + DbReferences.COLUMN_LIST_ITEMS_ID + " = '" + newItems + "' WHERE " + DbReferences.LIST_ID + " = '" + id + "'"
+                + " AND " + DbReferences.COLUMN_LIST_ITEMS_ID + " = '" + oldItems + "'";
     }
 
     public boolean deleteItemRow(String name) {

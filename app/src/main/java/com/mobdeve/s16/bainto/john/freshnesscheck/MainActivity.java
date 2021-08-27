@@ -30,11 +30,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        executorService.execute(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void run() {
+                dbHelper = DbHelper.getInstance(MainActivity.this);
+                items = dbHelper.getAllItemsDefault();
+            }
+        });
+
         mainMenuTab = findViewById(R.id.mainMenuTab);
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            doMySearch(query);
+            //doMySearch(query);
         }
     }
 
@@ -47,21 +56,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.sortName) {
+        //if (id == R.id.sortName) {
 
-        }
-        else if (id == R.id.sortExpiration) {
+        //}
+        //else if (id == R.id.sortExpiration) {
 
-        }
+        //}
 
         return true;
-        executorService.execute(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void run() {
-                dbHelper = DbHelper.getInstance(MainActivity.this);
-                items = dbHelper.getAllItemsDefault();
-            }
-        });
     }
 }
