@@ -13,7 +13,7 @@
         android:focusableInTouchMode="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_back_foreground" />
+        app:srcCompat="@drawable/ic_back_foreground"/>
 
     <ImageButton
         android:id="@+id/addBtn"
