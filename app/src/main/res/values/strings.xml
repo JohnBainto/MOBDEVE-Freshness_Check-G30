@@ -9,4 +9,5 @@
     <string name="add_item">add item</string>
     <string name="app_label">Freshness Check</string>
     <string name="search_hint">Search</string>
+    <string name="item_name">Item Name</string>
 </resources>
