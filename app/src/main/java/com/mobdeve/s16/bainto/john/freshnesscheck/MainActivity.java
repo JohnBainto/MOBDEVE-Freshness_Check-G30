@@ -2,6 +2,7 @@ package com.mobdeve.s16.bainto.john.freshnesscheck;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActionBar;
@@ -23,9 +24,9 @@ public class MainActivity extends AppCompatActivity {
     TabLayout mainMenuTab;
     private ArrayList<Item> items;
 
-    private RecyclerView recyclerView;
+    /*private RecyclerView recyclerView;
     private ItemAdapter adapter;
-    private RecyclerView.LayoutManager manager;
+    private RecyclerView.LayoutManager manager;*/
 
     private DbHelper dbHelper;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -49,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
         }
+
+        /*recyclerView = findViewById(R.id.recyclerView);
+
+        manager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(manager);
+
+        adapter = new ItemAdapter();
+        recyclerView.setAdapter(adapter);*/
     }
 
     @Override
