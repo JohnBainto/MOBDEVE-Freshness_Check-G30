@@ -9,6 +9,12 @@
         app:actionViewClass="android.widget.SearchView" />
 
     <item
+        android:id="@+id/filterBy"
+        android:icon="@drawable/filter_foreground"
+        android:orderInCategory="100"
+        android:title="filter by"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/sort"
         android:icon="@drawable/sort_foreground"
         android:title="@string/sort"

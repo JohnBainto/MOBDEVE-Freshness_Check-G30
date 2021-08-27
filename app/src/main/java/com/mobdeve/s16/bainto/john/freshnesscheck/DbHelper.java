@@ -355,30 +355,40 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         String query = "UPDATE " + DbReferences.TABLE_NAME_ITEMS + " SET " + DbReferences.COLUMN_ITEM_NAME + " = '" + newName + "' WHERE " + DbReferences.ITEM_ID + " = '" + id + "'"
                 + " AND " + DbReferences.COLUMN_ITEM_NAME + " = '" + oldName + "'";
+
+        database.execSQL(query);
     }
 
     public void updateItemCategory(String newCategory, long id, String oldCategory) {
         SQLiteDatabase database = this.getWritableDatabase();
         String query = "UPDATE " + DbReferences.TABLE_NAME_ITEMS + " SET " + DbReferences.COLUMN_ITEM_CATEGORY + " = '" + newCategory + "' WHERE " + DbReferences.ITEM_ID + " = '" + id + "'"
                 + " AND " + DbReferences.COLUMN_ITEM_CATEGORY + " = '" + oldCategory + "'";
+
+        database.execSQL(query);
     }
 
     public void updateItemExpiration(String newDate, long id, String oldDate) {
         SQLiteDatabase database = this.getWritableDatabase();
         String query = "UPDATE " + DbReferences.TABLE_NAME_ITEMS + " SET " + DbReferences.COLUMN_ITEM_LOCAL_DATE + " = '" + newDate + "' WHERE " + DbReferences.ITEM_ID + " = '" + id + "'"
                 + " AND " + DbReferences.COLUMN_ITEM_LOCAL_DATE + " = '" + oldDate + "'";
+
+        database.execSQL(query);
     }
 
     public void updateListName(String newName, long id, String oldName) {
         SQLiteDatabase database = this.getWritableDatabase();
         String query = "UPDATE " + DbReferences.TABLE_NAME_LISTS + " SET " + DbReferences.COLUMN_LIST_NAME + " = '" + newName + "' WHERE " + DbReferences.LIST_ID + " = '" + id + "'"
                 + " AND " + DbReferences.COLUMN_LIST_NAME + " = '" + oldName + "'";
+
+        database.execSQL(query);
     }
 
     public void updateListItems(String newItems, long id, String oldItems) {
         SQLiteDatabase database = this.getWritableDatabase();
         String query = "UPDATE " + DbReferences.TABLE_NAME_LISTS + " SET " + DbReferences.COLUMN_LIST_ITEMS_ID + " = '" + newItems + "' WHERE " + DbReferences.LIST_ID + " = '" + id + "'"
                 + " AND " + DbReferences.COLUMN_LIST_ITEMS_ID + " = '" + oldItems + "'";
+
+        database.execSQL(query);
     }
 
     public boolean deleteItemRow(String name) {
@@ -401,8 +411,8 @@ public class DbHelper extends SQLiteOpenHelper {
         private static final String TABLE_NAME_LISTS = "lists", LIST_ID = "list_id", COLUMN_LIST_NAME = "list_name", COLUMN_LIST_ITEMS_ID = "items_id";
 
 
-        private static final String CREATE_TABLE_ITEM_STATEMENT = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_ITEMS + " (" + ITEM_ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_ITEM_NAME + " TEXT, " + COLUMN_ITEM_CATEGORY + " TEXT, " + COLUMN_ITEM_LOCAL_DATE + " TEXT)";
-        private static final String CREATE_TABLE_LIST_STATEMENT = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_LISTS + " (" + LIST_ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_LIST_NAME + " TEXT, " + COLUMN_LIST_ITEMS_ID + " TEXT)";
+        private static final String CREATE_TABLE_ITEM_STATEMENT = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_ITEMS + " (" + ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_ITEM_NAME + " TEXT, " + COLUMN_ITEM_CATEGORY + " TEXT, " + COLUMN_ITEM_LOCAL_DATE + " TEXT)";
+        private static final String CREATE_TABLE_LIST_STATEMENT = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_LISTS + " (" + LIST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_LIST_NAME + " TEXT, " + COLUMN_LIST_ITEMS_ID + " TEXT)";
 
         private static final String DROP_TABLE_ITEM_STATEMENT = "DROP TABLE IF EXISTS " + TABLE_NAME_ITEMS;
         private static final String DROP_TABLE_LIST_STATEMENT = "DROP TABLE IF EXISTS " + TABLE_NAME_LISTS;
