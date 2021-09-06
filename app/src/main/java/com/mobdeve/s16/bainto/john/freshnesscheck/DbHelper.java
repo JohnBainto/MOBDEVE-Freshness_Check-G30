@@ -60,7 +60,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                    LocalDate.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
+                    LocalDate.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))) //need to change for api 21
             ));
         }
         c.close();

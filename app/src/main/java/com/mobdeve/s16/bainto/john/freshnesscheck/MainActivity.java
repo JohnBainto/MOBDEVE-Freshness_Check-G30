@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         executorService.execute(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+            @RequiresApi(api = Build.VERSION_CODES.O) //limited to android oreo
             @Override
             public void run() {
                 dbHelper = DbHelper.getInstance(MainActivity.this);
