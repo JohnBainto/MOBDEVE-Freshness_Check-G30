@@ -7,12 +7,14 @@ public class Item {
     private long id;
     private String name, category;
     private LocalDate date;
+    private boolean isClicked;
 
     public Item(long id, String name, String category, LocalDate date) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.date = date;
+        this.isClicked = false;
     }
 
     public long getId() {
@@ -29,5 +31,10 @@ public class Item {
 
     public String getDate() {
         return date.toString();
+    }
+
+    public void setClicked(boolean isClicked)
+    {
+        this.isClicked = isClicked;
     }
 }

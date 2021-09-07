@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -403,6 +404,14 @@ public class DbHelper extends SQLiteOpenHelper {
         return database.delete(DbReferences.DATABASE_NAME, DbReferences.TABLE_NAME_LISTS + "=" + name, null) > 0;
     }
 
+    public ArrayList<Item> setInList(ArrayList<Item> items){
+        for(Item i : items) {
+            //query itemlist for item i in db
+        }
+
+        return items;
+    }
+
     private final class DbReferences {
         public static final int DATABASE_VERSION = 1;
         public static final String DATABASE_NAME = "freshness_check.db";
@@ -411,8 +420,16 @@ public class DbHelper extends SQLiteOpenHelper {
         private static final String TABLE_NAME_LISTS = "lists", LIST_ID = "list_id", COLUMN_LIST_NAME = "list_name", COLUMN_LIST_ITEMS_ID = "items_id";
 
 
-        private static final String CREATE_TABLE_ITEM_STATEMENT = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_ITEMS + " (" + ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_ITEM_NAME + " TEXT, " + COLUMN_ITEM_CATEGORY + " TEXT, " + COLUMN_ITEM_LOCAL_DATE + " TEXT)";
-        private static final String CREATE_TABLE_LIST_STATEMENT = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_LISTS + " (" + LIST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_LIST_NAME + " TEXT, " + COLUMN_LIST_ITEMS_ID + " TEXT)";
+        private static final String CREATE_TABLE_ITEM_STATEMENT = "CREATE TABLE IF NOT EXISTS " +
+                TABLE_NAME_ITEMS + " (" + ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_ITEM_NAME + " TEXT, " +
+                COLUMN_ITEM_CATEGORY + " TEXT, " +
+                COLUMN_ITEM_LOCAL_DATE + " DATE)";
+        private static final String CREATE_TABLE_LIST_STATEMENT = "CREATE TABLE IF NOT EXISTS " +
+                TABLE_NAME_LISTS + " (" + LIST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_LIST_NAME + " TEXT, " +
+                COLUMN_LIST_ITEMS_ID + " INTEGER, FOREIGN KEY(" + COLUMN_LIST_ITEMS_ID + ") REFERENCES " +
+                TABLE_NAME_ITEMS + "(" + ITEM_ID + "))";
 
         private static final String DROP_TABLE_ITEM_STATEMENT = "DROP TABLE IF EXISTS " + TABLE_NAME_ITEMS;
         private static final String DROP_TABLE_LIST_STATEMENT = "DROP TABLE IF EXISTS " + TABLE_NAME_LISTS;
