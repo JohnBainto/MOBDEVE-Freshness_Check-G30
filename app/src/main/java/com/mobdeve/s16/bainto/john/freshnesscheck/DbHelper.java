@@ -149,6 +149,60 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
+    public ArrayList<Item> getAllItemsAscExpiration() throws ParseException {
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor c = database.query(
+                DbReferences.TABLE_NAME_ITEMS,
+                null,
+                null,
+                null,
+                null,
+                null,
+                DbReferences.COLUMN_ITEM_LOCAL_DATE + " ASC",
+                null
+        );
+        ArrayList<Item> items = new ArrayList<>();
+        while(c.moveToNext()) {
+            items.add(new Item(
+                    c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
+                    dateFormat.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
+            ));
+        }
+        c.close();
+        database.close();
+
+        return items;
+    }
+
+    public ArrayList<Item> getAllItemsDescExpiration() throws ParseException {
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor c = database.query(
+                DbReferences.TABLE_NAME_ITEMS,
+                null,
+                null,
+                null,
+                null,
+                null,
+                DbReferences.COLUMN_ITEM_LOCAL_DATE + " DESC",
+                null
+        );
+        ArrayList<Item> items = new ArrayList<>();
+        while(c.moveToNext()) {
+            items.add(new Item(
+                    c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
+                    dateFormat.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
+            ));
+        }
+        c.close();
+        database.close();
+
+        return items;
+    }
+
     public ArrayList<ItemList> getAllListsDefault() {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor c = database.query(
@@ -163,12 +217,11 @@ public class DbHelper extends SQLiteOpenHelper {
         );
 
         ArrayList<ItemList> lists = new ArrayList<>();
-        ArrayList<Long> listItems = new ArrayList<>();
         while(c.moveToNext()) {
             lists.add(new ItemList(
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.LIST_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_NAME)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
+                    c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
             ));
         }
         c.close();
@@ -191,12 +244,11 @@ public class DbHelper extends SQLiteOpenHelper {
         );
 
         ArrayList<ItemList> lists = new ArrayList<>();
-        ArrayList<Long> listItems = new ArrayList<>();
         while(c.moveToNext()) {
             lists.add(new ItemList(
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.LIST_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_NAME)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
+                    c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
             ));
         }
         c.close();
@@ -274,12 +326,11 @@ public class DbHelper extends SQLiteOpenHelper {
         );
 
         ArrayList<ItemList> lists = new ArrayList<>();
-        ArrayList<Long> listItems = new ArrayList<>();
         while(c.moveToNext()) {
             lists.add(new ItemList(
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.LIST_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_NAME)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
+                    c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
             ));
         }
         c.close();
@@ -306,7 +357,7 @@ public class DbHelper extends SQLiteOpenHelper {
             lists.add(new ItemList(
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.LIST_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_NAME)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
+                    c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
             ));
         }
         c.close();
@@ -333,7 +384,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 ItemList list = new ItemList(
                         c.getLong(c.getColumnIndexOrThrow(DbReferences.LIST_ID)),
                         c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_NAME)),
-                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
+                        c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
                 );
 
                 result.add(list);
