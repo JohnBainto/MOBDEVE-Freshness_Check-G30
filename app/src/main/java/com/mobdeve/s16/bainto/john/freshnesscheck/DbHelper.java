@@ -5,17 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
-import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
-import java.time.LocalDate;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class DbHelper extends SQLiteOpenHelper {
     public static DbHelper instance = null;
+    private static final DateFormat dateFormat = new SimpleDateFormat("MM:dd:yyyy");
 
     public DbHelper(Context context) {
         super(context, DbReferences.DATABASE_NAME,null, DbReferences.DATABASE_VERSION);
@@ -42,8 +41,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return instance;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public ArrayList<Item> getAllItemsDefault() {
+    public ArrayList<Item> getAllItemsDefault() throws ParseException {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_ITEMS,
@@ -61,7 +59,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                    LocalDate.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))) //need to change for api 21
+                    dateFormat.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
             ));
         }
         c.close();
@@ -70,8 +68,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public ArrayList<Item> getAllItemsDescName() {
+    public ArrayList<Item> getAllItemsDescName() throws ParseException {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_ITEMS,
@@ -89,7 +86,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                    LocalDate.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
+                    dateFormat.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
             ));
         }
         c.close();
@@ -98,8 +95,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public ArrayList<Item> getAllItemsAscCategory() {
+    public ArrayList<Item> getAllItemsAscCategory() throws ParseException {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_ITEMS,
@@ -117,7 +113,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                    LocalDate.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
+                    dateFormat.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
             ));
         }
         c.close();
@@ -126,8 +122,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public ArrayList<Item> getAllItemsDescCategory() {
+    public ArrayList<Item> getAllItemsDescCategory() throws ParseException {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_ITEMS,
@@ -145,7 +140,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                    LocalDate.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
+                    dateFormat.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
             ));
         }
         c.close();
@@ -228,15 +223,14 @@ public class DbHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(DbReferences.COLUMN_LIST_NAME, l.getListName());
-        values.put(DbReferences.COLUMN_ITEM_CATEGORY, l.getUsersId());
+        values.put(DbReferences.COLUMN_ITEM_CATEGORY, l.getItemId());
 
         database.insert(DbReferences.TABLE_NAME_ITEMS, null, values);
 
         database.close();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public ArrayList<Item> searchItemByName(String name) {
+    public ArrayList<Item> searchItemByName(String name) throws ParseException {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_ITEMS,
@@ -254,7 +248,7 @@ public class DbHelper extends SQLiteOpenHelper {
                         c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                         c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                         c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                        LocalDate.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
+                        dateFormat.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
                 );
 
                 result.add(item);
@@ -294,7 +288,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return lists;
     }
 
-    public ArrayList<ItemList> getFilterItemsExpiration(LocalDate expiration) {
+    public ArrayList<ItemList> getFilterItemsExpiration(Date expiration) {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_LISTS,
@@ -308,7 +302,6 @@ public class DbHelper extends SQLiteOpenHelper {
         );
 
         ArrayList<ItemList> lists = new ArrayList<>();
-        ArrayList<Long> listItems = new ArrayList<>();
         while(c.moveToNext()) {
             lists.add(new ItemList(
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.LIST_ID)),
