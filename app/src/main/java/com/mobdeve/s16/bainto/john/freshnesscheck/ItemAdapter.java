@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
-    private ArrayList<Item> data;
+    private ArrayList<String> data;
 
-    public ItemAdapter(ArrayList<Item> data) {
+    public ItemAdapter(ArrayList<String> data) {
         this.data = data;
     }
 
@@ -25,10 +25,16 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     }
 
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
-        holder.setItemTv(data.get(position).getName());
+        holder.setItemTv(data.get(position));
     }
 
     public int getItemCount() {
         return data.size();
+    }
+
+    public void setData(ArrayList<String> data) {
+        this.data.clear();
+        this.data.addAll(data);
+        notifyDataSetChanged();
     }
 }
