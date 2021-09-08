@@ -5,10 +5,10 @@ import java.util.Date;
 public class Item {
     private long id;
     private String name, category;
-    private Date date;
+    private String date;
     private boolean isClicked;
 
-    public Item(long id, String name, String category, Date date) {
+    public Item(long id, String name, String category, String date) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -29,7 +29,7 @@ public class Item {
     }
 
     public String getDate() {
-        return date.toString();
+        return date;
     }
 
     public void setClicked(boolean isClicked)
