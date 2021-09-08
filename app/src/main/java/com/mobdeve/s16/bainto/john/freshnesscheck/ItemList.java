@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class ItemList {
     private long listId;
     private String listName;
-    private String usersId;
+    private String itemId;
 
-    public ItemList(long listId, String listName, String usersId) {
+    public ItemList(long listId, String listName, String itemId) {
         this.listId = listId;
         this.listName = listName;
-        this.usersId = usersId;
+        this.itemId = itemId;
     }
 
     public long getListId() {
@@ -21,7 +21,7 @@ public class ItemList {
         return listName;
     }
 
-    public String getUsersId() {
-        return usersId;
+    public String getItemId() {
+        return itemId;
     }
 }
