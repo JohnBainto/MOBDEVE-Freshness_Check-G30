@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class ItemList {
     private long listId;
     private String listName;
-    private String itemId;
+    private long itemId;
 
-    public ItemList(long listId, String listName, String itemId) {
+    public ItemList(long listId, String listName, long itemId) {
         this.listId = listId;
         this.listName = listName;
         this.itemId = itemId;
@@ -21,7 +21,7 @@ public class ItemList {
         return listName;
     }
 
-    public String getItemId() {
+    public long getItemId() {
         return itemId;
     }
 }
