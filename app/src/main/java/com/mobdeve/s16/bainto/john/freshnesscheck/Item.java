@@ -1,15 +1,14 @@
 package com.mobdeve.s16.bainto.john.freshnesscheck;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.util.Date;
 
 public class Item {
     private long id;
     private String name, category;
-    private LocalDate date;
+    private Date date;
     private boolean isClicked;
 
-    public Item(long id, String name, String category, LocalDate date) {
+    public Item(long id, String name, String category, Date date) {
         this.id = id;
         this.name = name;
         this.category = category;
