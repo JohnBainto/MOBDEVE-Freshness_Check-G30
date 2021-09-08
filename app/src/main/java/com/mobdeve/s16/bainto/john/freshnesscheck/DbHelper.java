@@ -5,16 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class DbHelper extends SQLiteOpenHelper {
     public static DbHelper instance = null;
-    private static final DateFormat dateFormat = new SimpleDateFormat("MM:dd:yyyy");
 
     public DbHelper(Context context) {
         super(context, DbReferences.DATABASE_NAME,null, DbReferences.DATABASE_VERSION);
@@ -41,7 +35,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return instance;
     }
 
-    public ArrayList<Item> getAllItemsDefault() throws ParseException {
+    public ArrayList<Item> getAllItemsDefault() {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_ITEMS,
@@ -59,7 +53,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                    dateFormat.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
             ));
         }
         c.close();
@@ -68,7 +62,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public ArrayList<Item> getAllItemsDescName() throws ParseException {
+    public ArrayList<Item> getAllItemsDescName() {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_ITEMS,
@@ -86,7 +80,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                    dateFormat.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
             ));
         }
         c.close();
@@ -95,7 +89,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public ArrayList<Item> getAllItemsAscCategory() throws ParseException {
+    public ArrayList<Item> getAllItemsAscCategory() {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_ITEMS,
@@ -113,7 +107,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                    dateFormat.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
             ));
         }
         c.close();
@@ -122,7 +116,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public ArrayList<Item> getAllItemsDescCategory() throws ParseException {
+    public ArrayList<Item> getAllItemsDescCategory() {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_ITEMS,
@@ -140,7 +134,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                    dateFormat.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
             ));
         }
         c.close();
@@ -149,7 +143,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public ArrayList<Item> getAllItemsAscExpiration() throws ParseException {
+    public ArrayList<Item> getAllItemsAscExpiration() {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_ITEMS,
@@ -167,7 +161,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                    dateFormat.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
             ));
         }
         c.close();
@@ -176,7 +170,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public ArrayList<Item> getAllItemsDescExpiration() throws ParseException {
+    public ArrayList<Item> getAllItemsDescExpiration() {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_ITEMS,
@@ -194,7 +188,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                    dateFormat.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
             ));
         }
         c.close();
@@ -282,52 +276,40 @@ public class DbHelper extends SQLiteOpenHelper {
         database.close();
     }
 
-    public ArrayList<Item> searchItemByName(String name) throws ParseException {
+    public ArrayList<Item> filterItemsByName(String name) {
         SQLiteDatabase database = this.getReadableDatabase();
-        Cursor c = database.query(
-                DbReferences.TABLE_NAME_ITEMS,
-                null,
-                "name LIKE ?",
-                new String[] {"%"+name+"%"},
-                null,
-                null,
-                DbReferences.COLUMN_ITEM_NAME,
-                null);
-        ArrayList<Item> result = new ArrayList<>();
+
+        String queryString = "SELECT * FROM " + DbReferences.TABLE_NAME_ITEMS + " WHERE " + DbReferences.COLUMN_ITEM_NAME + " = ? ";
+        Cursor c = database.rawQuery(queryString, new String[] {name});
+
+        ArrayList<Item> items = new ArrayList<>();
         if (c.moveToFirst()) {
             do{
                 Item item = new Item(
                         c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                         c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                         c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                        dateFormat.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
+                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
                 );
 
-                result.add(item);
+                items.add(item);
             }while (c.moveToNext());
         }
 
         c.close();
 
-        return result;
+        return items;
     }
 
-    public ArrayList<ItemList> getFilterItemsCategory(String category) {
+    public ArrayList<ItemList> filterItemsByCategory(String category) {
         SQLiteDatabase database = this.getReadableDatabase();
-        Cursor c = database.query(
-                DbReferences.TABLE_NAME_LISTS,
-                null,
-                "category = ?",
-                new String[] {"%"+category+"%"},
-                null,
-                null,
-                DbReferences.COLUMN_LIST_NAME + " ASC",
-                null
-        );
 
-        ArrayList<ItemList> lists = new ArrayList<>();
+        String queryString = "SELECT * FROM " + DbReferences.TABLE_NAME_ITEMS + " WHERE " + DbReferences.COLUMN_ITEM_CATEGORY + " = ? ";
+        Cursor c = database.rawQuery(queryString, new String[] {category});
+
+        ArrayList<ItemList> items = new ArrayList<>();
         while(c.moveToNext()) {
-            lists.add(new ItemList(
+            items.add(new ItemList(
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.LIST_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_NAME)),
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
@@ -336,25 +318,18 @@ public class DbHelper extends SQLiteOpenHelper {
         c.close();
         database.close();
 
-        return lists;
+        return items;
     }
 
-    public ArrayList<ItemList> getFilterItemsExpiration(Date expiration) {
+    public ArrayList<ItemList> filterItemsByExpiration(String expiration) {
         SQLiteDatabase database = this.getReadableDatabase();
-        Cursor c = database.query(
-                DbReferences.TABLE_NAME_LISTS,
-                null,
-                "expiration_date = ?",
-                new String[] {"%"+expiration+"%"},
-                null,
-                null,
-                DbReferences.COLUMN_LIST_NAME + " ASC",
-                null
-        );
 
-        ArrayList<ItemList> lists = new ArrayList<>();
+        String queryString = "SELECT * FROM " + DbReferences.TABLE_NAME_ITEMS + " WHERE " + DbReferences.COLUMN_ITEM_CATEGORY + " = ? ";
+        Cursor c = database.rawQuery(queryString, new String[] {expiration});
+
+        ArrayList<ItemList> items = new ArrayList<>();
         while(c.moveToNext()) {
-            lists.add(new ItemList(
+            items.add(new ItemList(
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.LIST_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_NAME)),
                     c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
@@ -363,21 +338,16 @@ public class DbHelper extends SQLiteOpenHelper {
         c.close();
         database.close();
 
-        return lists;
+        return items;
     }
 
-    public ArrayList<ItemList> searchListByName(String name) {
+    public ArrayList<ItemList> filterListsByName(String name) {
         SQLiteDatabase database = this.getReadableDatabase();
-        Cursor c = database.query(
-                DbReferences.TABLE_NAME_LISTS,
-                null,
-                "name LIKE ?",
-                new String[] {"%"+name+"%"},
-                null,
-                null,
-                DbReferences.COLUMN_LIST_NAME,
-                null);
-        ArrayList<ItemList> result = new ArrayList<>();
+
+        String queryString = "SELECT * FROM " + DbReferences.TABLE_NAME_LISTS + " WHERE " + DbReferences.COLUMN_LIST_NAME + " = ? ";
+        Cursor c = database.rawQuery(queryString, new String[] {name});
+
+        ArrayList<ItemList> lists = new ArrayList<>();
 
         if (c.moveToFirst()) {
             do{
@@ -387,13 +357,13 @@ public class DbHelper extends SQLiteOpenHelper {
                         c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
                 );
 
-                result.add(list);
+                lists.add(list);
             }while (c.moveToNext());
         }
 
         c.close();
 
-        return result;
+        return lists;
     }
 
     public void updateItemName(String newName, long id, String oldName) {
