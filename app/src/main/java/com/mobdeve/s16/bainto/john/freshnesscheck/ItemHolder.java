@@ -15,7 +15,7 @@ public class ItemHolder extends RecyclerView.ViewHolder {
         text = itemView.findViewById(R.id.itemTv);
     }
 
-    public void setItemTv(String name) {
-        text.setText(name);
+    public void bindData(String s) {
+        this.text.setText(s);
     }
 }
