@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.SearchManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,16 +11,17 @@ import android.view.MenuItem;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
     TabLayout mainMenuTab;
-    private ArrayList<Item> data;
+    private ArrayList<String> data;
 
     private RecyclerView recyclerView;
     private ItemAdapter adapter;
-    private RecyclerView.LayoutManager manager;
 
     private DbHelper dbHelper;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -32,27 +31,84 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        data = new ArrayList<String>();
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        adapter = new ItemAdapter(MainActivity.this, data);
+        recyclerView.setAdapter(adapter);
+
         executorService.execute(new Runnable() {
             @Override
             public void run() {
                 dbHelper = DbHelper.getInstance(MainActivity.this);
-                data = dbHelper.getAllItemsDefault();
+
+                /*Item item1 = new Item(null, "bread", "carbs", "21/01/20");
+                Item item2 = new Item(null, "apple juice", "liquid", "21/01/25");
+                Item item3 = new Item(null, "iced tea", "liquid", "21/01/31");
+                dbHelper.insertItem(item1);
+                dbHelper.insertItem(item2);
+                dbHelper.insertItem(item3);*/
+
+                /*ItemList list1 = new ItemList(null,"breakfast", dbHelper.filterItemsByName("bread").get(0).getId());
+                ItemList list2 = new ItemList(null, "drinks", dbHelper.filterItemsByName("apple juice").get(0).getId());
+                ItemList list3 = new ItemList(null, "drinks", dbHelper.filterItemsByName("iced tea").get(0).getId());
+
+                dbHelper.insertList(list1);
+                dbHelper.insertList(list2);
+                dbHelper.insertList(list3);*/
+
+
+                /*dbHelper.deleteItemRow("bread");
+                dbHelper.deleteItemRow("apple juice");
+                dbHelper.deleteItemRow("iced tea");*/
+
+                data = getItemNames(dbHelper.getAllItemsDescName());
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter = new ItemAdapter(MainActivity.this, data);
+                        recyclerView.setAdapter(adapter);
+                    }
+                });
             }
         });
 
         mainMenuTab = findViewById(R.id.mainMenuTab);
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-        }
+        mainMenuTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        dbHelper = DbHelper.getInstance(MainActivity.this);
 
-        recyclerView = findViewById(R.id.recyclerView);
+                        if(tab.getPosition() == 0) {
+                            data = getItemNames(dbHelper.getAllItemsDefault());
+                        }
+                        else {
+                            data = getListNames(dbHelper.getAllListsDefault());
+                        }
 
-        manager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(manager);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.setData(new ArrayList<>(data));
+                            }
+                        });
+                    }
+                });
+            }
 
-        adapter = new ItemAdapter(getItemNames(data));
-        recyclerView.setAdapter(adapter);
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
     }
 
     @Override
@@ -88,6 +144,10 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0; i < data.size(); i++)
             names.add(data.get(i).getListName());
+
+        HashSet<String> uniqueNames = new HashSet<String>(names);
+
+        Collections.sort(names = new ArrayList<String>(uniqueNames));
 
         return names;
     }
