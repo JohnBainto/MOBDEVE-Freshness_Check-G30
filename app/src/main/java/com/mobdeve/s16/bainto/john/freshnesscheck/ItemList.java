@@ -24,4 +24,13 @@ public class ItemList {
     public long getItemId() {
         return itemId;
     }
+
+    @Override
+    public String toString() {
+        return "ItemList{" +
+                "id='" + listId + '\'' +
+                ", name='" + listName + '\'' +
+                ", itemId='" + itemId + '\'' +
+                '}';
+    }
 }

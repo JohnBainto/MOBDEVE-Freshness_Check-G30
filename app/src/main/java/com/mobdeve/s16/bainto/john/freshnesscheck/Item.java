@@ -36,4 +36,15 @@ public class Item {
     {
         this.isClicked = isClicked;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", category='" + category + '\'' +
+                ", date='" + date + '\'' +
+                ", isClicked='" + isClicked + '\'' +
+                '}';
+    }
 }

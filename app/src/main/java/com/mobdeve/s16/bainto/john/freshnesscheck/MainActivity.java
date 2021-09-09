@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,7 +19,8 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
     TabLayout mainMenuTab;
-    private ArrayList<Item> data;
+    private ArrayList<Item> data = new ArrayList<Item>();
+    private ArrayList<ItemList> listData = new ArrayList<ItemList>();
 
     private RecyclerView recyclerView;
     private ItemAdapter adapter;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 dbHelper = DbHelper.getInstance(MainActivity.this);
                 data = dbHelper.getAllItemsDefault();
+                listData = dbHelper.getAllListsDefault();
             }
         });
 
@@ -53,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new ItemAdapter(getItemNames(data));
         recyclerView.setAdapter(adapter);
+
+        this.printAllData();
     }
 
     @Override
@@ -90,5 +95,15 @@ public class MainActivity extends AppCompatActivity {
             names.add(data.get(i).getListName());
 
         return names;
+    }
+
+    private void printAllData() {
+        Log.d("MainActivity", "printAllData: start");
+        for(Item i : data) {
+            Log.d("MainActivity", "printAllData: " + i.toString());
+        }
+        for(ItemList il : listData) {
+            Log.d("MainActivity", "printAllData: " + il.toString());
+        }
     }
 }
