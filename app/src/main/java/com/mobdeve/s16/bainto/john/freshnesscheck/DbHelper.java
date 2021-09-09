@@ -418,10 +418,34 @@ public class DbHelper extends SQLiteOpenHelper {
         return database.delete(DbReferences.DATABASE_NAME, DbReferences.TABLE_NAME_LISTS + "=" + name, null) > 0;
     }
 
-    public ArrayList<Item> setInList(ArrayList<Item> items){
-        for(Item i : items) {
-            //query itemlist for item i in db
+    //method to set if the item is already in the list
+    public ArrayList<Item> setInList(ArrayList<Item> items, String listName){
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        Cursor c = database.query(
+                DbReferences.TABLE_NAME_LISTS,
+                null,
+                DbReferences.COLUMN_LIST_NAME + " = ?",
+                new String[]{listName},
+                null,
+                null,
+                null,
+                null
+        );
+
+        while(c.moveToNext())
+        {
+            for(Item i : items) {
+                if(i.getId() == c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID)));
+                {
+                    i.setClicked(true);
+                    break;
+                }
+            }
         }
+
+        c.close();
+        database.close();
 
         return items;
     }
