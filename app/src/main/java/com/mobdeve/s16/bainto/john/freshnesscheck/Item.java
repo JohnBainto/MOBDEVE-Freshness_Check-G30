@@ -3,12 +3,12 @@ package com.mobdeve.s16.bainto.john.freshnesscheck;
 import java.util.Date;
 
 public class Item {
-    private long id;
+    private Long id;
     private String name, category;
     private String date;
     private boolean isClicked;
 
-    public Item(long id, String name, String category, String date) {
+    public Item(Long id, String name, String category, String date) {
         this.id = id;
         this.name = name;
         this.category = category;
