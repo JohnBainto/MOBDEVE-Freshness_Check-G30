@@ -4,12 +4,12 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public class Item {
-    private long id;
+    private int id;
     private String name, category;
     private LocalDate date;
     private boolean isClicked;
 
-    public Item(long id, String name, String category, LocalDate date) {
+    public Item(int id, String name, String category, LocalDate date) {
         this.id = id;
         this.name = name;
         this.category = category;

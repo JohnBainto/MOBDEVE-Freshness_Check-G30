@@ -58,7 +58,7 @@ public class DbHelper extends SQLiteOpenHelper {
         ArrayList<Item> items = new ArrayList<>();
         while(c.moveToNext()) {
             items.add(new Item(
-                    c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
+                    c.getInt(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
                     LocalDate.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))) //need to change for api 21
@@ -86,7 +86,7 @@ public class DbHelper extends SQLiteOpenHelper {
         ArrayList<Item> items = new ArrayList<>();
         while(c.moveToNext()) {
             items.add(new Item(
-                    c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
+                    c.getInt(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
                     LocalDate.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
@@ -114,7 +114,7 @@ public class DbHelper extends SQLiteOpenHelper {
         ArrayList<Item> items = new ArrayList<>();
         while(c.moveToNext()) {
             items.add(new Item(
-                    c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
+                    c.getInt(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
                     LocalDate.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
@@ -142,7 +142,7 @@ public class DbHelper extends SQLiteOpenHelper {
         ArrayList<Item> items = new ArrayList<>();
         while(c.moveToNext()) {
             items.add(new Item(
-                    c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
+                    c.getInt(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                     c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
                     LocalDate.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
@@ -251,7 +251,7 @@ public class DbHelper extends SQLiteOpenHelper {
         if (c.moveToFirst()) {
             do{
                 Item item = new Item(
-                        c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
+                        c.getInt(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
                         c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
                         c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
                         LocalDate.parse(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)))
@@ -410,6 +410,30 @@ public class DbHelper extends SQLiteOpenHelper {
         }
 
         return items;
+    }
+
+    public void addItemToList(String listName, Item item){
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(DbReferences.COLUMN_LIST_NAME, listName);
+        values.put(DbReferences.COLUMN_LIST_ITEMS_ID, item.getId());
+
+        database.insert(DbReferences.TABLE_NAME_LISTS, null, values);
+        database.close();
+    }
+
+    public void removeItemFromList(String listName, Item item){
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        database.delete(
+                DbReferences.TABLE_NAME_LISTS,
+                DbReferences.COLUMN_LIST_ITEMS_ID + " = ? AND " + DbReferences.COLUMN_LIST_NAME + " = ?",
+                new String[]{String.valueOf(item.getId()), listName}
+        );
+
+        database.close();
     }
 
     private final class DbReferences {
