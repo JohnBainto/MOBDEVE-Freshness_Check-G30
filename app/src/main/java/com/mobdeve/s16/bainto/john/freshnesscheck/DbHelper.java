@@ -269,9 +269,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(DbReferences.COLUMN_LIST_NAME, l.getListName());
-        values.put(DbReferences.COLUMN_ITEM_CATEGORY, l.getItemId());
+        values.put(DbReferences.COLUMN_LIST_ITEMS_ID, l.getItemId());
 
-        database.insert(DbReferences.TABLE_NAME_ITEMS, null, values);
+        database.insert(DbReferences.TABLE_NAME_LISTS, null, values);
 
         database.close();
     }
@@ -406,16 +406,20 @@ public class DbHelper extends SQLiteOpenHelper {
         database.execSQL(query);
     }
 
-    public boolean deleteItemRow(String name) {
+    public void deleteItemRow(String name) {
         SQLiteDatabase database = this.getWritableDatabase();
 
-        return database.delete(DbReferences.DATABASE_NAME, DbReferences.TABLE_NAME_ITEMS + "=" + name, null) > 0;
+        database.delete(DbReferences.TABLE_NAME_ITEMS, DbReferences.COLUMN_ITEM_NAME + "=?", new String[]{name});
+
+        database.close();
     }
 
-    public boolean deleteListRow(String name) {
+    public void  deleteListRow(String name) {
         SQLiteDatabase database = this.getWritableDatabase();
 
-        return database.delete(DbReferences.DATABASE_NAME, DbReferences.TABLE_NAME_LISTS + "=" + name, null) > 0;
+        database.delete(DbReferences.TABLE_NAME_LISTS,DbReferences.COLUMN_LIST_NAME + "=?", new String[] {name});
+
+        database.close();
     }
 
     public ArrayList<Item> setInList(ArrayList<Item> items){
@@ -438,7 +442,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 TABLE_NAME_ITEMS + " (" + ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_ITEM_NAME + " TEXT, " +
                 COLUMN_ITEM_CATEGORY + " TEXT, " +
-                COLUMN_ITEM_LOCAL_DATE + " DATE)";
+                COLUMN_ITEM_LOCAL_DATE + " TEXT)";
         private static final String CREATE_TABLE_LIST_STATEMENT = "CREATE TABLE IF NOT EXISTS " +
                 TABLE_NAME_LISTS + " (" + LIST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_LIST_NAME + " TEXT, " +
