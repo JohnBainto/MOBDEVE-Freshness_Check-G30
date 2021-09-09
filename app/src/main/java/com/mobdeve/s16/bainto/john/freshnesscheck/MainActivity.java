@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,7 +19,9 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
     TabLayout mainMenuTab;
-    private ArrayList<String> data;
+    private ArrayList<String> data = new ArrayList<String>();
+    private ArrayList<Item> itemData = new ArrayList<Item>();
+    private ArrayList<ItemList> listData = new ArrayList<ItemList>();
 
     private RecyclerView recyclerView;
     private ItemAdapter adapter;
@@ -63,7 +66,9 @@ public class MainActivity extends AppCompatActivity {
                 dbHelper.deleteItemRow("apple juice");
                 dbHelper.deleteItemRow("iced tea");*/
 
-                data = getItemNames(dbHelper.getAllItemsDescName());
+                data = getItemNames(dbHelper.getAllItemsDefault());
+                itemData = dbHelper.getAllItemsDefault();
+                listData = dbHelper.getAllListsDefault();
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -99,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 });
+
             }
 
             @Override
@@ -109,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
+        this.printAllData();
     }
 
     @Override
@@ -150,5 +158,15 @@ public class MainActivity extends AppCompatActivity {
         Collections.sort(names = new ArrayList<String>(uniqueNames));
 
         return names;
+    }
+
+    private void printAllData() {
+        Log.d("MainActivity", "printAllData: start");
+        for(Item i : itemData) {
+            Log.d("MainActivity", "printAllData: " + i.toString());
+        }
+        for(ItemList il : listData) {
+            Log.d("MainActivity", "printAllData: " + il.toString());
+        }
     }
 }
