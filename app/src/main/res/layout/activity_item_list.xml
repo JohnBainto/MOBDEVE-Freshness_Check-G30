@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageButton
-        android:id="@+id/liBackBtn"
+        android:id="@+id/item_list_back_btn"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:backgroundTint="#00FFFFFF"
@@ -17,9 +17,10 @@
         tools:srcCompat="@drawable/ic_back_foreground" />
 
     <TextView
-        android:id="@+id/nameTv"
+        android:id="@+id/item_list_list_name_tv"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:editable="false"
         android:gravity="center"
         android:text="Item List Name"
         android:textColor="@color/green"
@@ -28,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addItemToListFab"
+        android:id="@+id/item_list_add_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
@@ -41,4 +42,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/item_list_rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_list_list_name_tv" />
 </androidx.constraintlayout.widget.ConstraintLayout>

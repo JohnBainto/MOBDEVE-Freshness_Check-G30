@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     TabLayout mainMenuTab;
     private ArrayList<String> data = new ArrayList<String>();
     private ArrayList<Item> itemData = new ArrayList<Item>();
-    private ArrayList<ItemList> listData = new ArrayList<ItemList>();
 
     private RecyclerView recyclerView;
     private ItemAdapter adapter;
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        adapter = new ItemAdapter(MainActivity.this, data);
+        adapter = new ItemAdapter(MainActivity.this, data, 'i');
         recyclerView.setAdapter(adapter);
 
         executorService.execute(new Runnable() {
@@ -68,12 +67,11 @@ public class MainActivity extends AppCompatActivity {
 
                 data = getItemNames(dbHelper.getAllItemsDefault());
                 itemData = dbHelper.getAllItemsDefault();
-                listData = dbHelper.getAllListsDefault();
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter = new ItemAdapter(MainActivity.this, data);
+                        adapter = new ItemAdapter(MainActivity.this, data, 'i');
                         recyclerView.setAdapter(adapter);
                     }
                 });
@@ -165,8 +163,8 @@ public class MainActivity extends AppCompatActivity {
         for(Item i : itemData) {
             Log.d("MainActivity", "printAllData: " + i.toString());
         }
-        for(ItemList il : listData) {
-            Log.d("MainActivity", "printAllData: " + il.toString());
-        }
+//        for(ItemList il : listData) {
+//            Log.d("MainActivity", "printAllData: " + il.toString());
+//        }
     }
 }
