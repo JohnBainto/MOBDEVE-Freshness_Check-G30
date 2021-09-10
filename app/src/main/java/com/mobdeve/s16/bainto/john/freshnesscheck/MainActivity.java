@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
                                 result.getData().getStringExtra(AddItemActivity.NEW_ITEM_CATEGORY_KEY),
                                 result.getData().getStringExtra(AddItemActivity.NEW_ITEM_EXPIRATION_KEY)
                         ));
+                        data = getItemNames(dbHelper.getAllItemsDefault());
+
+                        adapter.setData(new ArrayList<>(data));
                     }
                     else if(result.getResultCode() == Activity.RESULT_CANCELED) {
                         Log.v(TAG, "Result Cancelled.");
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
         addBtn.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
-
+            newItemResultLauncher.launch(intent);
         });
 
         executorService.execute(new Runnable() {
