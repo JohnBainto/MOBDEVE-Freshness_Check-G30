@@ -7,15 +7,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemHolder extends RecyclerView.ViewHolder {
-    private TextView text;
+    private TextView name, date;
 
     public ItemHolder(@NonNull View itemView) {
         super(itemView);
 
-        text = itemView.findViewById(R.id.itemTv);
+        this.name = itemView.findViewById(R.id.itemTv);
+        this.date = itemView.findViewById(R.id.dateTv);
     }
 
     public void bindData(String s) {
-        this.text.setText(s);
+        this.name.setText(s);
+        this.date.setVisibility(View.GONE);
+    }
+
+    public void bindDataSorted(String name, String date) {
+        this.name.setText(name);
+        this.date.setVisibility(View.VISIBLE);
+        this.date.setText(date);
     }
 }

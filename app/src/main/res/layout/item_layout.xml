@@ -25,10 +25,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/sortThroughTv"
+        android:id="@+id/dateTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="sortedThrough"
+        android:text="@string/date"
         android:textColor="@color/green"
         android:textSize="16sp"
         android:visibility="gone"
