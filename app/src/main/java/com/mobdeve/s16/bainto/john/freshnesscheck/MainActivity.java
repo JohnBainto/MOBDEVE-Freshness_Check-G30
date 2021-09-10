@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -31,12 +32,21 @@ public class MainActivity extends AppCompatActivity {
 
     TabLayout mainMenuTab;
     private ArrayList<String> data = new ArrayList<String>();
+    private ArrayList<String> itemExpirations = new ArrayList<String>();
+    private ArrayList<String> currentItemExpirations = new ArrayList<String>();
+    private ArrayList<String> currentItemData = new ArrayList<String>();
+    private ArrayList<String> currentListData = new ArrayList<String>();
     private ArrayList<Item> itemData = new ArrayList<Item>();
 
     private RecyclerView recyclerView;
     private ItemAdapter adapter;
 
     private FloatingActionButton addBtn;
+
+    private int itemNameOrder = 0;
+    private int itemExpOrder = 0;
+    private int listNameOrder = 0;
+    private int tabPosition = 0;
 
     private DbHelper dbHelper;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -106,14 +116,20 @@ public class MainActivity extends AppCompatActivity {
                 dbHelper.deleteItemRow("apple juice");
                 dbHelper.deleteItemRow("iced tea");*/
 
-                data = getItemNames(dbHelper.getAllItemsDefault());
-                itemData = dbHelper.getAllItemsDefault();
+                itemData = dbHelper.getAllItemsAscExpiration();
+                data = getItemNames(itemData);
+                itemExpirations = getItemExpirations(itemData);
+
+                currentItemData = getItemNames(itemData);
+                currentListData = getListNames(dbHelper.getAllListsDefault());
+                currentItemExpirations = itemExpirations;
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         adapter = new ItemAdapter(MainActivity.this, data, 'i');
                         recyclerView.setAdapter(adapter);
+                        adapter.setData(new ArrayList<>(data), itemExpirations);
                     }
                 });
             }
@@ -129,16 +145,24 @@ public class MainActivity extends AppCompatActivity {
                         dbHelper = DbHelper.getInstance(MainActivity.this);
 
                         if(tab.getPosition() == 0) {
-                            data = getItemNames(dbHelper.getAllItemsDefault());
+                            data = currentItemData;
+                            itemExpirations = currentItemExpirations;
+                            tabPosition++;
                         }
                         else {
-                            data = getListNames(dbHelper.getAllListsDefault());
+                            data = currentListData;
+                            tabPosition--;
                         }
 
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                adapter.setData(new ArrayList<>(data));
+                                if(tab.getPosition() == 0){
+                                    adapter.setData(new ArrayList<>(data), itemExpirations);
+                                }
+                                else {
+                                    adapter.setData(new ArrayList<>(data));
+                                }
                             }
                         });
                     }
@@ -161,18 +185,96 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu (Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        //if (id == R.id.sortName) {
 
-        //}
-        //else if (id == R.id.sortExpiration) {
+        if(tabPosition == 0) {
+            if (id == R.id.sortName) {
+                if(itemNameOrder == 0) {
+                    itemData = dbHelper.getAllItemsDefault();
+                    currentItemData = getItemNames(itemData);
 
-        //}
+                    currentItemExpirations = getItemExpirations(itemData);
+                    itemExpirations = currentItemExpirations;
+
+                    data = currentItemData;
+
+                    adapter.setData(new ArrayList<>(data), itemExpirations);
+
+                    itemNameOrder++;
+                }
+                else {
+                    itemData = dbHelper.getAllItemsDescName();
+                    currentItemData = getItemNames(itemData);
+
+                    currentItemExpirations = getItemExpirations(itemData);
+                    itemExpirations = currentItemExpirations;
+
+                    data = currentItemData;
+
+                    adapter.setData(new ArrayList<>(data), itemExpirations);
+
+                    itemNameOrder--;
+                }
+            }
+            else if (id == R.id.sortExpiration) {
+                if(itemExpOrder == 0) {
+                    itemData = dbHelper.getAllItemsAscExpiration();
+                    currentItemData = getItemNames(itemData);
+
+                    currentItemExpirations = getItemExpirations(itemData);
+                    itemExpirations = currentItemExpirations;
+
+                    data = currentItemData;
+
+                    adapter.setData(new ArrayList<>(data), itemExpirations);
+
+                    itemExpOrder++;
+                }
+                else {
+                    itemData = dbHelper.getAllItemsDescExpiration();
+                    currentItemData = getItemNames(itemData);
+
+                    currentItemExpirations = getItemExpirations(itemData);
+                    itemExpirations = currentItemExpirations;
+
+                    data = currentItemData;
+
+                    adapter.setData(new ArrayList<>(data), itemExpirations);
+
+                    itemExpOrder--;
+                }
+            }
+        }
+        else {
+            if(id == R.id.sortName) {
+                if(listNameOrder == 0) {
+                    currentListData = getListNames(dbHelper.getAllListsDefault());
+                    data = currentListData;
+
+                    adapter.setData(new ArrayList<>(data));
+
+                    listNameOrder++;
+                }
+                else {
+                    currentListData = getListNames(dbHelper.getAllListsDescName());
+                    data = currentListData;
+
+                    adapter.setData(new ArrayList<>(data));
+
+                    listNameOrder--;
+                }
+            }
+        }
+        if(tabPosition == 1 && id == R.id.sort) {
+            MenuItem sortExpiration = findViewById(R.id.sortExpiration);
+            sortExpiration.setVisible(false);
+        }
 
         return true;
     }
@@ -189,14 +291,23 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<String> getListNames(ArrayList<ItemList> data) {
         ArrayList<String> names = new ArrayList<>();
 
-        for(int i = 0; i < data.size(); i++)
-            names.add(data.get(i).getListName());
-
-        HashSet<String> uniqueNames = new HashSet<String>(names);
-
-        Collections.sort(names = new ArrayList<String>(uniqueNames));
+        for(int i = 0; i < data.size(); i++) {
+            String name = data.get(i).getListName();
+            if(i > 0)
+                if(name.compareTo(data.get(i - 1).getListName()) != 0)
+                    names.add(name);
+        }
 
         return names;
+    }
+
+    public ArrayList<String> getItemExpirations(ArrayList<Item> data) {
+        ArrayList<String> expirations = new ArrayList<>();
+
+        for(int i = 0; i < data.size(); i++)
+            expirations.add(data.get(i).getDate());
+
+        return expirations;
     }
 
     private void printAllData() {
