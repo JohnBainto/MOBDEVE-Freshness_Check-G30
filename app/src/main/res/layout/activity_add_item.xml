@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
@@ -19,46 +19,50 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="3"
+            android:gravity="center"
             android:text="Add Item"
             android:textAlignment="center"
             android:textColor="@color/green"
-            android:textSize="24sp" />
+            android:textSize="30sp" />
 
         <ImageButton
             android:id="@+id/add_item_add_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="0.1"
             android:adjustViewBounds="true"
             android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/ic_add_foreground"
             tools:ignore="SpeakableTextPresentCheck" />
+
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/add_item_name_tv"
+    <EditText
+        android:id="@+id/addItemNameEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:ems="10"
         android:hint="Item Name"
+        android:inputType="textPersonName"
         android:textSize="24sp" />
 
     <EditText
-        android:id="@+id/add_item_date_date"
+        android:id="@+id/addItemCategoryEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Expiry Date"
-        android:inputType="date"
+        android:hint="Category"
+        android:inputType="textPersonName"
         android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/add_item_category_tv"
+    <EditText
+        android:id="@+id/addItemDateEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Category"
+        android:focusable="false"
+        android:hint="YYYY-MM-DD"
+        android:inputType="none"
         android:textSize="24sp" />
 
 </LinearLayout>
