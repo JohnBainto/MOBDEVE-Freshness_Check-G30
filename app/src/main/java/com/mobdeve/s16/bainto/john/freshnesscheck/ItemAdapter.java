@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     private Context context;
     private ArrayList<String> data;
+    private ArrayList<String> dataExpiration;
     private ActivityResultLauncher<Intent> myActivityResultLauncher;
     private char type;
 
@@ -51,7 +52,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     }
 
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
-        holder.bindData(this.data.get(position));
+        if(dataExpiration == null)
+            holder.bindData(this.data.get(position));
+        else
+            holder.bindDataSorted(this.data.get(position), this.dataExpiration.get(position));
     }
 
     public int getItemCount() {
@@ -59,6 +63,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     }
 
     public void setData(ArrayList<String> data){
+        this.dataExpiration = null;
+        this.data.clear();
+        this.data.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public void setData(ArrayList<String> data, ArrayList<String> dataExpiration) {
+        this.dataExpiration = dataExpiration;
         this.data.clear();
         this.data.addAll(data);
         notifyDataSetChanged();
