@@ -1,14 +1,23 @@
 package com.mobdeve.s16.bainto.john.freshnesscheck;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultCaller;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -18,6 +27,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String TAG = "MainActivity";
+
     TabLayout mainMenuTab;
     private ArrayList<String> data = new ArrayList<String>();
     private ArrayList<Item> itemData = new ArrayList<Item>();
@@ -25,20 +36,47 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ItemAdapter adapter;
 
+    private FloatingActionButton addBtn;
+
     private DbHelper dbHelper;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+    private ActivityResultLauncher<Intent> newItemResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if(result.getResultCode() == Activity.RESULT_OK) {
+                        dbHelper.insertItem(new Item(
+                                null,
+                                result.getData().getStringExtra(AddItemActivity.NEW_ITEM_NAME_KEY),
+                                result.getData().getStringExtra(AddItemActivity.NEW_ITEM_CATEGORY_KEY),
+                                result.getData().getStringExtra(AddItemActivity.NEW_ITEM_EXPIRATION_KEY)
+                        ));
+                    }
+                    else if(result.getResultCode() == Activity.RESULT_CANCELED) {
+                        Log.v(TAG, "Result Cancelled.");
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        data = new ArrayList<String>();
-
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         adapter = new ItemAdapter(MainActivity.this, data, 'i');
         recyclerView.setAdapter(adapter);
+
+        addBtn = findViewById(R.id.addItemFab);
+
+        addBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
+
+        });
 
         executorService.execute(new Runnable() {
             @Override
