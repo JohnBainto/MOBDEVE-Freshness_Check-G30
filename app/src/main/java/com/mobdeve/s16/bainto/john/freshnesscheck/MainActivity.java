@@ -70,6 +70,10 @@ public class MainActivity extends AppCompatActivity {
                     else if(result.getResultCode() == Activity.RESULT_CANCELED) {
                         Log.v(TAG, "Result Cancelled.");
                     }
+                    else if(result.getResultCode() == AddListActivity.ADD_LIST_OK)
+                    {
+                        data = getListNames(dbHelper.getAllListsDefault());
+                    }
                 }
             }
     );
@@ -87,14 +91,25 @@ public class MainActivity extends AppCompatActivity {
         addBtn = findViewById(R.id.addItemFab);
 
         addBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
-            newItemResultLauncher.launch(intent);
+            if(tabPosition == 0)
+            {
+                Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
+                newItemResultLauncher.launch(intent);
+            }
+            else if(tabPosition == -1)
+            {
+                Intent intent = new Intent(MainActivity.this, AddListActivity.class);
+                newItemResultLauncher.launch(intent);
+            }
+
+
         });
 
         executorService.execute(new Runnable() {
             @Override
             public void run() {
                 dbHelper = DbHelper.getInstance(MainActivity.this);
+
 
                 /*Item item1 = new Item(null, "bread", "carbs", "21/01/20");
                 Item item2 = new Item(null, "apple juice", "liquid", "21/01/25");
@@ -149,11 +164,13 @@ public class MainActivity extends AppCompatActivity {
                             data = currentItemData;
                             itemExpirations = currentItemExpirations;
                             tabPosition++;
+                            Log.d(TAG, "run: tabPosition = " + tabPosition);
                         }
                         else {
                             adapter.setType('l');
                             data = currentListData;
                             tabPosition--;
+                            Log.d(TAG, "run: tabPosition = " + tabPosition);
                         }
 
                         runOnUiThread(new Runnable() {

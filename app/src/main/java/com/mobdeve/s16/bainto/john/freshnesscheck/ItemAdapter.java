@@ -28,6 +28,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     public ItemAdapter(ArrayList<String> data, ActivityResultLauncher<Intent> myActivityResultLauncher) {
         this.data = data;
         this.myActivityResultLauncher = myActivityResultLauncher;
+        this.type = 'i';
     }
 
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

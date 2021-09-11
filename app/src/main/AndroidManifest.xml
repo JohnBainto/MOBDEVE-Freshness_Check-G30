@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FreshnessCheck">
         <activity android:name=".AddItemActivity"></activity>
+        <activity android:name=".AddListActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

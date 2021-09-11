@@ -37,6 +37,8 @@ public class Item {
         this.isClicked = isClicked;
     }
 
+    public boolean getClicked(){ return isClicked;}
+
     @Override
     public String toString() {
         return "Item{" +
