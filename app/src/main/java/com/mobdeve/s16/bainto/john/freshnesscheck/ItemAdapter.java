@@ -19,10 +19,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     private ActivityResultLauncher<Intent> myActivityResultLauncher;
     private char type;
 
-    public ItemAdapter(Context context, ArrayList<String> data, char type) {
+    public ItemAdapter(Context context, ArrayList<String> data) {
         this.context = context;
         this.data = data;
-        this.type = type;
+        this.type = 'i';
     }
 
     public ItemAdapter(ArrayList<String> data, ActivityResultLauncher<Intent> myActivityResultLauncher) {
@@ -44,6 +44,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
                 }
                 else if(type == 'l'){
                     //send to list activity
+                    Intent intent = new Intent(parent.getContext(), listsDetailsActivity.class);
+                    intent.putExtra(listsDetailsActivity.LIST_NAME_KEY, data.get(itemHolder.getAdapterPosition()));
+                    myActivityResultLauncher.launch(intent);
                 }
             }
         });

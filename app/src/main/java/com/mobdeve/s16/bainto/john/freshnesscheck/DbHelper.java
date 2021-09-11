@@ -454,6 +454,47 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
+    public ArrayList<String> getItemsInList(String listName){
+        SQLiteDatabase database = this.getReadableDatabase();
+        ArrayList<String> names = new ArrayList<String>();
+        ArrayList<Long> id = new ArrayList<Long>();
+
+        Cursor c = database.query(
+                DbReferences.TABLE_NAME_LISTS,
+                null,
+                DbReferences.COLUMN_LIST_NAME + " = ?",
+                new String[]{listName},
+                null,
+                null,
+                null,
+                null
+        );
+
+        while(c.moveToNext())
+        {
+            id.add(c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID)));
+        }
+
+        for(Long i : id) {
+            c = database.query(
+                    DbReferences.TABLE_NAME_ITEMS,
+                    null,
+                    DbReferences.ITEM_ID + " = ?",
+                    new String[]{i.toString()},
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            while(c.moveToNext())
+            {
+                names.add(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)));
+            }
+        }
+
+        return names;
+    }
+
     private final class DbReferences {
         public static final int DATABASE_VERSION = 1;
         public static final String DATABASE_NAME = "freshness_check.db";

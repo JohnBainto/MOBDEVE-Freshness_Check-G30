@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        adapter = new ItemAdapter(MainActivity.this, data, 'i');
+        adapter = new ItemAdapter(MainActivity.this, data);
         recyclerView.setAdapter(adapter);
 
         addBtn = findViewById(R.id.addItemFab);
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter = new ItemAdapter(MainActivity.this, data, 'i');
+                        adapter = new ItemAdapter(MainActivity.this, data);
                         recyclerView.setAdapter(adapter);
                         adapter.setData(new ArrayList<>(data), itemExpirations);
                     }
@@ -145,11 +145,13 @@ public class MainActivity extends AppCompatActivity {
                         dbHelper = DbHelper.getInstance(MainActivity.this);
 
                         if(tab.getPosition() == 0) {
+                            adapter.setType('i');
                             data = currentItemData;
                             itemExpirations = currentItemExpirations;
                             tabPosition++;
                         }
                         else {
+                            adapter.setType('l');
                             data = currentListData;
                             tabPosition--;
                         }
