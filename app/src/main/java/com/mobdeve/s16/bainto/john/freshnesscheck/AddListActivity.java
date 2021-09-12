@@ -19,7 +19,8 @@ import java.util.concurrent.Executors;
 
 public class AddListActivity extends AppCompatActivity {
     public static final String TYPE_KEY = "TYPE_KEY", NAME_KEY = "NAME_KEY";
-    public static final int ADD_LIST_OK = 5;
+    public static final int ADD_LIST_OK = 1234;
+    private static final String TAG = "AddListActivity";
 
     private ArrayList<Item> items = new ArrayList<Item>();
     private ImageButton back, add;
@@ -45,6 +46,7 @@ public class AddListActivity extends AppCompatActivity {
         manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
         adapter = new AddListAdapter(AddListActivity.this, items);
+        recyclerView.setAdapter(adapter);
 
         Intent intent = getIntent();
         if(intent.getCharExtra(TYPE_KEY, 'a') == 'e')
@@ -64,7 +66,6 @@ public class AddListActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        // Pass in the contacts to the needed components and set the adapter
                         adapter = new AddListAdapter(AddListActivity.this, items);
                         recyclerView.setAdapter(adapter);
                     }
@@ -80,14 +81,30 @@ public class AddListActivity extends AppCompatActivity {
                 for(Item i : items) {
                     if(i.getClicked())
                     {
-                        myDbHelper.insertList(new ItemList(null, listName.getText().toString(), i.getId()));
+                        executorService.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                DbHelper myDbHelper = DbHelper.getInstance(AddListActivity.this);
+                                Log.d(TAG, "item = " + i.getName());
+                                ItemList list = new ItemList(null, listName.getText().toString(), i.getId());
+                                Log.d(TAG, list.toString());
+                                myDbHelper.insertList(list);
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent();
+                                        intent.putExtra(NAME_KEY, listName.getText().toString());
+                                        setResult(ADD_LIST_OK, intent);
+                                        finish();
+                                    }
+                                });
+                            }
+                        });
                     }
                 }
 
-                Intent intent = new Intent();
-                intent.putExtra(NAME_KEY, listName.getText().toString());
-                setResult(ADD_LIST_OK, intent);
-                finish();
+
             }
         });
     }

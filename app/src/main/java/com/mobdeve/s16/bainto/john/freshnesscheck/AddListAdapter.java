@@ -2,6 +2,7 @@ package com.mobdeve.s16.bainto.john.freshnesscheck;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class AddListAdapter extends RecyclerView.Adapter<AddListHolder> {
+    private static final String TAG = "AddListAdapter";
     private Context context;
     private ArrayList<Item> items;
     private ActivityResultLauncher<Intent> myActivityResultLauncher;
@@ -39,6 +41,7 @@ public class AddListAdapter extends RecyclerView.Adapter<AddListHolder> {
                 if(addListHolder.item.isChecked())
                 {
                     items.get(addListHolder.getAdapterPosition()).setClicked(true);
+                    Log.d(TAG, "onClick: setclicked");
                 }
                 else
                 {

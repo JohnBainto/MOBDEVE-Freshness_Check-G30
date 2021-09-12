@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
+                    Log.d(TAG, "onActivityResult: ");
                     if(result.getResultCode() == Activity.RESULT_OK) {
                         dbHelper.insertItem(new Item(
                                 null,
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(result.getResultCode() == AddListActivity.ADD_LIST_OK)
                     {
+                        Log.d(TAG, "onActivityResult: " + result.getData().getStringExtra(AddListActivity.NAME_KEY));
                         data = getListNames(dbHelper.getAllListsDefault());
                     }
                 }
