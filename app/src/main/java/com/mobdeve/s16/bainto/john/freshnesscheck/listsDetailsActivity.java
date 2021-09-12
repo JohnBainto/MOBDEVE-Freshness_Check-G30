@@ -3,6 +3,7 @@ package com.mobdeve.s16.bainto.john.freshnesscheck;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ImageButton;
@@ -27,13 +28,13 @@ import java.util.concurrent.Executors;
 public class listsDetailsActivity extends AppCompatActivity {
 
     public static final String LIST_NAME_KEY = "LIST_NAME_KEY";
+    private static final String TAG = "listDetailsActivity";
 
     private ArrayList<ItemList> listData = new ArrayList<ItemList>();
     private ArrayList<String> itemNames = new ArrayList<String>();
     private RecyclerView recyclerView;
     private TextView listName;
-    private ImageButton backBtn;
-    private FloatingActionButton addBtn;
+    private ImageButton backBtn, editBtn;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager manager;
 
@@ -62,25 +63,27 @@ public class listsDetailsActivity extends AppCompatActivity {
         this.recyclerView = findViewById(R.id.item_list_rv);
         this.listName = findViewById(R.id.item_list_list_name_tv);
         this.backBtn = findViewById(R.id.item_list_back_btn);
-        this.addBtn = findViewById(R.id.item_list_add_fab);
+        this.editBtn = findViewById(R.id.item_list_edit_btn);
+
+        Intent intent =  getIntent();
+        this.listName.setText(intent.getStringExtra(LIST_NAME_KEY));
 
         manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
 
         adapter = new ItemAdapter(itemNames, myActivityResultLauncher);
 
-        Intent intent = getIntent();
 
         executorService.execute(new Runnable() {
             @Override
             public void run() {
+                myDbHelper = DbHelper.getInstance(listsDetailsActivity.this);
                 data = myDbHelper.getItemsInList(intent.getStringExtra(LIST_NAME_KEY));
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-//                        adapter = new ItemAdapter(MainActivity.this, data);
+                        adapter = new ItemAdapter(listsDetailsActivity.this, data);
                         recyclerView.setAdapter(adapter);
-//                        adapter.setData(new ArrayList<>(data), itemExpirations);
                     }
                 });
 
@@ -94,7 +97,7 @@ public class listsDetailsActivity extends AppCompatActivity {
             }
         });
 
-        this.addBtn.setOnClickListener(new View.OnClickListener() {
+        this.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), AddToListActivity.class);

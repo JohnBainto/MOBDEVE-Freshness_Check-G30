@@ -2,6 +2,7 @@ package com.mobdeve.s16.bainto.john.freshnesscheck;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
+    private static final String TAG = "ItemAdapter";
     private Context context;
     private ArrayList<String> data;
     private ArrayList<String> dataExpiration;
@@ -47,6 +49,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
                     //send to list activity
                     Intent intent = new Intent(parent.getContext(), listsDetailsActivity.class);
                     intent.putExtra(listsDetailsActivity.LIST_NAME_KEY, data.get(itemHolder.getAdapterPosition()));
+                    Log.d(TAG, "onClick: " + intent.getStringExtra(listsDetailsActivity.LIST_NAME_KEY));
                     myActivityResultLauncher.launch(intent);
                 }
             }
