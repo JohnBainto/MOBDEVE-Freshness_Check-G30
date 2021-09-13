@@ -47,7 +47,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 null,
-                DbReferences.COLUMN_ITEM_NAME + " ASC",
+                DbReferences.COLUMN_ITEM_NAME + " COLLATE NOCASE ASC",
                 null
         );
         ArrayList<Item> items = new ArrayList<>();
@@ -74,7 +74,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 null,
-                DbReferences.COLUMN_ITEM_NAME + " DESC",
+                DbReferences.COLUMN_ITEM_NAME + " COLLATE NOCASE DESC",
                 null
         );
         ArrayList<Item> items = new ArrayList<>();
@@ -101,7 +101,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 null,
-                DbReferences.COLUMN_ITEM_CATEGORY + " ASC",
+                DbReferences.COLUMN_ITEM_CATEGORY + " COLLATE NOCASE ASC",
                 null
         );
         ArrayList<Item> items = new ArrayList<>();
@@ -128,7 +128,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 null,
-                DbReferences.COLUMN_ITEM_CATEGORY + " DESC",
+                DbReferences.COLUMN_ITEM_CATEGORY + " COLLATE NOCASE DESC",
                 null
         );
         ArrayList<Item> items = new ArrayList<>();
@@ -209,7 +209,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 null,
-                DbReferences.COLUMN_LIST_NAME + " ASC",
+                DbReferences.COLUMN_LIST_NAME + " COLLATE NOCASE ASC",
                 null
         );
 
@@ -236,7 +236,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 null,
-                DbReferences.COLUMN_LIST_NAME + " DESC",
+                DbReferences.COLUMN_LIST_NAME + " COLLATE NOCASE DESC",
                 null
         );
 
@@ -494,6 +494,8 @@ public class DbHelper extends SQLiteOpenHelper {
                 names.add(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)));
             }
         }
+
+        c.close();
 
         return names;
     }
