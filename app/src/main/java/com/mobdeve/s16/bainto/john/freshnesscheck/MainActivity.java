@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -290,8 +291,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
         if(tabPosition == -1 && id == R.id.sort) {
-            MenuItem sortExpiration = findViewById(R.id.sortExpiration);
+            SubMenu sortMenu = item.getSubMenu();
+            MenuItem sortExpiration = sortMenu.getItem(1);
             sortExpiration.setVisible(false);
         }
 
