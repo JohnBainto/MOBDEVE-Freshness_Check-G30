@@ -64,9 +64,8 @@ public class MainActivity extends AppCompatActivity {
                                 result.getData().getStringExtra(AddItemActivity.NEW_ITEM_CATEGORY_KEY),
                                 result.getData().getStringExtra(AddItemActivity.NEW_ITEM_EXPIRATION_KEY)
                         ));
-                        data = getItemNames(dbHelper.getAllItemsDefault());
 
-                        adapter.setData(new ArrayList<>(data));
+                        updateAdapter();
                     }
                     else if(result.getResultCode() == Activity.RESULT_CANCELED) {
                         Log.v(TAG, "Result Cancelled.");
@@ -103,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, AddListActivity.class);
                 newItemResultLauncher.launch(intent);
             }
-
 
         });
 
@@ -292,12 +290,22 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        if(tabPosition == 1 && id == R.id.sort) {
+        if(tabPosition == -1 && id == R.id.sort) {
             MenuItem sortExpiration = findViewById(R.id.sortExpiration);
             sortExpiration.setVisible(false);
         }
 
         return true;
+    }
+
+    public void updateAdapter() {
+        itemData = dbHelper.getAllItemsAscExpiration();
+        data = getItemNames(itemData);
+
+        currentItemData = getItemNames(itemData);
+        currentItemExpirations = getItemExpirations(itemData);
+
+        adapter.setData(new ArrayList<>(data), currentItemExpirations);
     }
 
     public ArrayList<String> getItemNames(ArrayList<Item> data) {
