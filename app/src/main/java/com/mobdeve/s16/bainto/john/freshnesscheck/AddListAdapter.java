@@ -57,6 +57,7 @@ public class AddListAdapter extends RecyclerView.Adapter<AddListHolder> {
 
     public void onBindViewHolder(@NonNull AddListHolder holder, int position) {
         holder.setItem(items.get(position).getName());
+        holder.setChecked(items.get(position).getClicked());
     }
 
     public int getItemCount() {

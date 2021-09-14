@@ -23,6 +23,7 @@ public class AddListActivity extends AppCompatActivity {
     private static final String TAG = "AddListActivity";
 
     private ArrayList<Item> items = new ArrayList<Item>();
+    private char type;
     private ImageButton back, add;
     private TextView title, listName;
     private RecyclerView recyclerView;
@@ -34,6 +35,7 @@ public class AddListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_list);
 
@@ -49,42 +51,65 @@ public class AddListActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         Intent intent = getIntent();
-        if(intent.getCharExtra(TYPE_KEY, 'a') == 'e')
+        type = intent.getCharExtra(TYPE_KEY, 'a');
+        if(type == 'e')
+        {
             title.setText("Edit Item List");
+            back.setVisibility(View.INVISIBLE);
+        }
+
 
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                DbHelper myDbHelper = DbHelper.getInstance(AddListActivity.this);
+                myDbHelper = DbHelper.getInstance(AddListActivity.this);
                 items = myDbHelper.getAllItemsDefault();
 
                 Intent intent = getIntent();
-                if(intent.getCharExtra(TYPE_KEY, 'a') == 'e')
+                if(type == 'e')
                 {
+                    Log.d(TAG, "run: " + intent.getStringExtra(NAME_KEY));
                     items = myDbHelper.setInList(items, intent.getStringExtra(NAME_KEY));
+                    for(Item i : items) {
+                        Log.d("MainActivity", "printAllData: " + i.toString());
+                    }
                 }
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         adapter = new AddListAdapter(AddListActivity.this, items);
                         recyclerView.setAdapter(adapter);
+                        Intent intent = getIntent();
+                        if(type == 'e')
+                        {
+                            listName.setText(intent.getStringExtra(NAME_KEY));
+                            listName.setEnabled(false);
+                        }
                     }
                 });
 
             }
         });
-
+        Log.d(TAG, "onCreate: past executor service");
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 items = adapter.getItems();
+                if(type == 'e')
+                {
+                    executorService.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            myDbHelper.deleteListRow(listName.getText().toString());
+                        }
+                    });
+                }
                 for(Item i : items) {
                     if(i.getClicked())
                     {
                         executorService.execute(new Runnable() {
                             @Override
                             public void run() {
-                                DbHelper myDbHelper = DbHelper.getInstance(AddListActivity.this);
                                 Log.d(TAG, "item = " + i.getName());
                                 ItemList list = new ItemList(null, listName.getText().toString(), i.getId());
                                 Log.d(TAG, list.toString());
