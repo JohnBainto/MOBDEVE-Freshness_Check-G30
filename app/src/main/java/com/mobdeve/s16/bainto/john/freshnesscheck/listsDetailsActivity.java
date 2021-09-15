@@ -29,7 +29,7 @@ public class listsDetailsActivity extends AppCompatActivity {
     private ArrayList<String> itemNames = new ArrayList<String>();
     private RecyclerView recyclerView;
     private TextView listName;
-    private ImageButton backBtn, editBtn;
+    private ImageButton backBtn, editBtn, deleteBtn;
     private ItemAdapter adapter;
     private RecyclerView.LayoutManager manager;
 
@@ -92,6 +92,8 @@ public class listsDetailsActivity extends AppCompatActivity {
                         });
                     }
                 });
+            }
+        });
 
 
         this.backBtn.setOnClickListener(new View.OnClickListener() {
@@ -147,15 +149,15 @@ public class listsDetailsActivity extends AppCompatActivity {
             @Override
             public void run() {
                 myDbHelper = DbHelper.getInstance(listsDetailsActivity.this);
-                data = myDbHelper.getItemsInList(intent.getStringExtra(LIST_NAME_KEY));
+                itemData = myDbHelper.getItemsInList(intent.getStringExtra(LIST_NAME_KEY));
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        data = getItemNames(itemData);
                         adapter = new ItemAdapter(listsDetailsActivity.this, data);
                         recyclerView.setAdapter(adapter);
                     }
                 });
-
             }
         });
     }
