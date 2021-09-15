@@ -369,6 +369,29 @@ public class DbHelper extends SQLiteOpenHelper {
         return lists;
     }
 
+    public Item searchItem(String name, String expiration) {
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        Cursor c = database.query(
+                DbReferences.TABLE_NAME_ITEMS,
+                null,
+                DbReferences.COLUMN_ITEM_NAME + "=?" + " AND " + DbReferences.COLUMN_ITEM_LOCAL_DATE + "=?",
+                new String[] {name, expiration},
+                null,
+                null,
+                null,
+            null);
+
+        Item item = new Item(c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
+                c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
+                c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
+                c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)));
+
+        c.close();
+
+        return item;
+    }
+
     public void updateItemName(String newName, long id, String oldName) {
         SQLiteDatabase database = this.getWritableDatabase();
         String query = "UPDATE " + DbReferences.TABLE_NAME_ITEMS + " SET " + DbReferences.COLUMN_ITEM_NAME + " = '" + newName + "' WHERE " + DbReferences.ITEM_ID + " = '" + id + "'"
