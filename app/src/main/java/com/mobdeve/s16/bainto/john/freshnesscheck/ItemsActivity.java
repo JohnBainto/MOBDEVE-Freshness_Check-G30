@@ -22,6 +22,7 @@ import java.util.concurrent.Executors;
 public class ItemsActivity extends AppCompatActivity {
 
     public static final String ITEM_KEY = "ITEM_NAME_KEY";
+    public static final String ITEM_KEY_TYPE = "ITEM_NAME_TYPE";
 
     private Intent intent;
     private Item item;
@@ -36,8 +37,8 @@ public class ItemsActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if(result.getResultCode() == Activity.RESULT_OK){
-
+                    if(result.getResultCode() == Activity.RESULT_OK) {
+                        item = result.getData().getParcelableExtra(AddItemActivity.EDIT_ITEM_TAG);
                     }
                 }
             });
@@ -69,9 +70,20 @@ public class ItemsActivity extends AppCompatActivity {
         this.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AddToListActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AddItemActivity.class);
+                intent.putExtra(ITEM_KEY, item);
+                intent.putExtra(ITEM_KEY_TYPE, 'e');
                 myActivityResultLauncher.launch(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        itemName.setText(item.getName());
+        itemCategory.setText(item.getCategory());
+        itemExpiration.setText(item.getDate());
     }
 }
