@@ -92,9 +92,7 @@ public class listsDetailsActivity extends AppCompatActivity {
                 });
             }
         });
-
-            }
-        });
+        
 
         this.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
