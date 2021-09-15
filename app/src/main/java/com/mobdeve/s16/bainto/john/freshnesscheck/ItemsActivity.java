@@ -54,7 +54,6 @@ public class ItemsActivity extends AppCompatActivity {
         itemName = findViewById(R.id.item_details_name_tv);
         itemCategory = findViewById(R.id.item_details_category_tv);
         itemExpiration = findViewById(R.id.item_details_expiry_date_tv);
-        backBtn = findViewById(R.id.item_details_back_btn);
         editBtn = findViewById(R.id.item_details_edit_btn);
         deleteBtn = findViewById(R.id.deleteItemIb);
 
@@ -63,13 +62,6 @@ public class ItemsActivity extends AppCompatActivity {
         itemName.setText(item.getName());
         itemCategory.setText(item.getCategory());
         itemExpiration.setText(item.getDate());
-
-        this.backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         this.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
