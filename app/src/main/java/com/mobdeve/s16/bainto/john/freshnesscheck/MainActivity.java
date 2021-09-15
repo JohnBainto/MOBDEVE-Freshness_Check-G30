@@ -206,8 +206,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onRestart() {
+        super.onRestart();
 
         executorService.execute(new Runnable() {
             @Override
@@ -222,11 +222,20 @@ public class MainActivity extends AppCompatActivity {
 
                 currentListData = getListNames(dbHelper.getAllListsDefault());
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.setType('i');
-                        adapter.setData(new ArrayList<>(data), currentItemExpirations);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(tabPosition == 0) {
+                                adapter.setType('i');
+
+                                adapter.setData(new ArrayList<>(data), currentItemExpirations);
+                            }
+                            else {
+                                adapter.setType('l');
+
+                                data = currentListData;
+                                adapter.setData(new ArrayList<>(data));
+                            }
                     }
                 });
             }
