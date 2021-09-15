@@ -1,12 +1,21 @@
 package com.mobdeve.s16.bainto.john.freshnesscheck;
 
-import java.util.Date;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Item {
+public class Item implements Parcelable {
     private Long id;
     private String name, category;
     private String date;
     private boolean isClicked;
+
+    public Item() {}
+    public Item(Parcel in) {
+        id = in.readLong();
+        name = in.readString();
+        category = in.readString();
+        date = in.readString();
+    }
 
     public Item(Long id, String name, String category, String date) {
         this.id = id;
@@ -49,4 +58,30 @@ public class Item {
                 ", isClicked='" + isClicked + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeLong(this.id);
+        out.writeString(this.name);
+        out.writeString(this.category);
+        out.writeString(this.date);
+    }
+
+    public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
+
+        @Override
+        public Item createFromParcel(Parcel source) {
+            return new Item(source);
+        }
+
+        @Override
+        public Item[] newArray(int size) {
+            return new Item[0];
+        }
+    };
 }

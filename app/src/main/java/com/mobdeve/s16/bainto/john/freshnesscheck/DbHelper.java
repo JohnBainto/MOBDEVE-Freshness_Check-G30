@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -369,6 +368,34 @@ public class DbHelper extends SQLiteOpenHelper {
         return lists;
     }
 
+    public Item searchItem(String name, String expiration) {
+        SQLiteDatabase database = this.getReadableDatabase();
+        Item item = new Item();
+
+        Cursor c = database.query(
+                DbReferences.TABLE_NAME_ITEMS,
+                null,
+                DbReferences.COLUMN_ITEM_NAME + "=?" + " AND " + DbReferences.COLUMN_ITEM_LOCAL_DATE + "=?",
+                new String[] {name, expiration},
+                null,
+                null,
+                null,
+            null);
+
+        while(c.moveToNext()) {
+            item = new Item(c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)));
+        }
+
+
+        c.close();
+        database.close();
+
+        return item;
+    }
+
     public void updateItemName(String newName, long id, String oldName) {
         SQLiteDatabase database = this.getWritableDatabase();
         String query = "UPDATE " + DbReferences.TABLE_NAME_ITEMS + " SET " + DbReferences.COLUMN_ITEM_NAME + " = '" + newName + "' WHERE " + DbReferences.ITEM_ID + " = '" + id + "'"
@@ -461,9 +488,9 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public ArrayList<String> getItemsInList(String listName){
+    public ArrayList<Item> getItemsInList(String listName){
         SQLiteDatabase database = this.getReadableDatabase();
-        ArrayList<String> names = new ArrayList<String>();
+        ArrayList<Item> items = new ArrayList<Item>();
         ArrayList<Long> id = new ArrayList<Long>();
 
         Cursor c = database.query(
@@ -495,13 +522,18 @@ public class DbHelper extends SQLiteOpenHelper {
             );
             while(c.moveToNext())
             {
-                names.add(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)));
+                items.add(new Item(
+                        i,
+                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
+                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
+                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
+                ));
             }
         }
 
         c.close();
 
-        return names;
+        return items;
     }
 
     public int getMostRecentId()

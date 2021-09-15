@@ -11,6 +11,7 @@
         android:theme="@style/Theme.FreshnessCheck">
         <activity android:name=".AddItemActivity"></activity>
         <activity android:name=".AddListActivity"></activity>
+        <activity android:name=".ItemsActivity"></activity>
         <activity android:name=".listsDetailsActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>

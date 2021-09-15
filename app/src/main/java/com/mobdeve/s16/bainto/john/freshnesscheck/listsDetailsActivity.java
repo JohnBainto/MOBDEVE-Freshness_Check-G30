@@ -25,12 +25,12 @@ public class listsDetailsActivity extends AppCompatActivity {
     public static final String LIST_NAME_KEY = "LIST_NAME_KEY";
     private static final String TAG = "listDetailsActivity";
 
-    private ArrayList<ItemList> listData = new ArrayList<ItemList>();
+    private ArrayList<Item> itemData = new ArrayList<Item>();
     private ArrayList<String> itemNames = new ArrayList<String>();
     private RecyclerView recyclerView;
     private TextView listName;
-    private ImageButton backBtn, editBtn, deleteBtn;
-    private RecyclerView.Adapter adapter;
+    private ImageButton backBtn, editBtn;
+    private ItemAdapter adapter;
     private RecyclerView.LayoutManager manager;
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -64,13 +64,34 @@ public class listsDetailsActivity extends AppCompatActivity {
         Intent intent =  getIntent();
         this.listName.setText(intent.getStringExtra(LIST_NAME_KEY));
 
-        manager = new LinearLayoutManager(this);
+        manager = new LinearLayoutManager(listsDetailsActivity.this);
         recyclerView.setLayoutManager(manager);
 
-        adapter = new ItemAdapter(itemNames, myActivityResultLauncher);
+        adapter = new ItemAdapter(data, myActivityResultLauncher);
+        adapter.setData(new ArrayList<>(data), getItemExpirations(itemData));
         recyclerView.setAdapter(adapter);
 
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                myDbHelper = DbHelper.getInstance(listsDetailsActivity.this);
+                itemData = myDbHelper.getItemsInList(intent.getStringExtra(LIST_NAME_KEY));
+                Log.d(TAG, "" + itemData.size());
+                data = getItemNames(itemData);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter = new ItemAdapter(data, myActivityResultLauncher);
 
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                recyclerView.setAdapter(adapter);
+                                adapter.setData(new ArrayList<>(data), getItemExpirations(itemData));
+                            }
+                        });
+                    }
+                });
 
 
         this.backBtn.setOnClickListener(new View.OnClickListener() {
@@ -137,5 +158,23 @@ public class listsDetailsActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public ArrayList<String> getItemNames(ArrayList<Item> data) {
+        ArrayList<String> names = new ArrayList<>();
+
+        for(int i = 0; i < data.size(); i++)
+            names.add(data.get(i).getName());
+
+        return names;
+    }
+
+    public ArrayList<String> getItemExpirations(ArrayList<Item> data) {
+        ArrayList<String> expirations = new ArrayList<>();
+
+        for(int i = 0; i < data.size(); i++)
+            expirations.add(data.get(i).getDate());
+
+        return expirations;
     }
 }
