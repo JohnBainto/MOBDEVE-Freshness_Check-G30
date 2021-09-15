@@ -75,21 +75,15 @@ public class listsDetailsActivity extends AppCompatActivity {
             @Override
             public void run() {
                 myDbHelper = DbHelper.getInstance(listsDetailsActivity.this);
+
                 itemData = myDbHelper.getItemsInList(intent.getStringExtra(LIST_NAME_KEY));
-                Log.d(TAG, "" + itemData.size());
                 data = getItemNames(itemData);
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter = new ItemAdapter(data, myActivityResultLauncher);
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                recyclerView.setAdapter(adapter);
-                                adapter.setData(new ArrayList<>(data), getItemExpirations(itemData));
-                            }
-                        });
+                        recyclerView.setAdapter(adapter);
+                        adapter.setData(new ArrayList<>(data), getItemExpirations(itemData));
                     }
                 });
             }
@@ -154,8 +148,14 @@ public class listsDetailsActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         data = getItemNames(itemData);
-                        adapter = new ItemAdapter(listsDetailsActivity.this, data);
-                        recyclerView.setAdapter(adapter);
+                        adapter = new ItemAdapter(data, myActivityResultLauncher);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                recyclerView.setAdapter(adapter);
+                                adapter.setData(new ArrayList<>(data), getItemExpirations(itemData));
+                            }
+                        });
                     }
                 });
             }
