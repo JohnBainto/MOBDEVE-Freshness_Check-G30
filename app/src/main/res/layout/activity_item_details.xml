@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Name"
-        android:textColor="@color/green"
+        android:textColor="@color/black"
         android:textSize="24sp" />
 
     <TextView
@@ -51,9 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Expiry Date"
-        android:textColor="@color/green"
-        android:textSize="24sp"
-        />
+        android:textColor="@color/black"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/item_details_category_tv"
@@ -61,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Category"
-        android:textColor="@color/green"
+        android:textColor="@color/black"
         android:textSize="24sp" />
 
     <TextView
@@ -69,8 +68,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textColor="@color/green"
         android:text="Item Lists"
+        android:textColor="@color/black"
         android:textSize="24sp" />
 
 </LinearLayout>
