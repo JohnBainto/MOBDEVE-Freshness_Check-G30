@@ -12,4 +12,10 @@
     <string name="item_name">Item Name</string>
     <string name="hint_pick_up_date">dd/mm/yyyy</string>
     <string name="date">date</string>
+    <string name="expiration_date">Expiration Date</string>
+    <string name="category">Category</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="name">Name</string>
+    <string name="edit">Edit</string>
+    <string name="back">Back</string>
 </resources>
