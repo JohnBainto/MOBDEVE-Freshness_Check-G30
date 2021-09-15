@@ -8,10 +8,12 @@ import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -261,6 +263,192 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu (Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
 
+        MenuItem filterByName = menu.findItem(R.id.filterByName);
+        SearchView searchName = (SearchView) filterByName.getActionView();
+        searchName.setQueryHint("");
+
+        MenuItem filterByCategory = menu.findItem(R.id.filterByCategory);
+        SearchView searchCategory = (SearchView) filterByCategory.getActionView();
+        searchCategory.setQueryHint("");
+
+        MenuItem filterByExpiration = menu.findItem(R.id.filterByExpiration);
+        SearchView searchExpiration = (SearchView) filterByExpiration.getActionView();
+        searchExpiration.setQueryHint("");
+
+        searchName.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText.compareTo("") == 0) {
+                    executorService.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            dbHelper = DbHelper.getInstance(MainActivity.this);
+
+                            itemData = dbHelper.getAllItemsAscExpiration();
+
+                            currentItemData = getItemNames(itemData);
+                            data = currentItemData;
+
+                            currentItemExpirations = getItemExpirations(itemData);
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.setType('i');
+                                    adapter.setData(new ArrayList<>(data), currentItemExpirations);
+                                }
+                            });
+                        }
+                    });
+                }
+                else {
+                    executorService.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            dbHelper = DbHelper.getInstance(MainActivity.this);
+
+                            itemData = dbHelper.filterItemsByName(newText);
+
+                            currentItemData = getItemNames(itemData);
+                            data = currentItemData;
+
+                            currentItemExpirations = getItemExpirations(itemData);
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.setType('i');
+                                    adapter.setData(new ArrayList<>(data), currentItemExpirations);
+                                }
+                            });
+                        }
+                    });
+                }
+            return false;
+            }
+        });
+
+        searchCategory.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText.compareTo("") == 0) {
+                    executorService.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            dbHelper = DbHelper.getInstance(MainActivity.this);
+
+                            itemData = dbHelper.getAllItemsAscExpiration();
+
+                            currentItemData = getItemNames(itemData);
+                            data = currentItemData;
+
+                            currentItemExpirations = getItemExpirations(itemData);
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.setType('i');
+                                    adapter.setData(new ArrayList<>(data), currentItemExpirations);
+                                }
+                            });
+                        }
+                    });
+                }
+                else {
+                    executorService.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            dbHelper = DbHelper.getInstance(MainActivity.this);
+
+                            itemData = dbHelper.filterItemsByCategory(newText);
+
+                            currentItemData = getItemNames(itemData);
+                            data = currentItemData;
+
+                            currentItemExpirations = getItemExpirations(itemData);
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.setType('i');
+                                    adapter.setData(new ArrayList<>(data), currentItemExpirations);
+                                }
+                            });
+                        }
+                    });
+                }
+                return false;
+            }
+        });
+
+        searchExpiration.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText.compareTo("") == 0) {
+                    executorService.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            dbHelper = DbHelper.getInstance(MainActivity.this);
+
+                            itemData = dbHelper.getAllItemsAscExpiration();
+
+                            currentItemData = getItemNames(itemData);
+                            data = currentItemData;
+
+                            currentItemExpirations = getItemExpirations(itemData);
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.setType('i');
+                                    adapter.setData(new ArrayList<>(data), currentItemExpirations);
+                                }
+                            });
+                        }
+                    });
+                }
+                else {
+                    executorService.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            dbHelper = DbHelper.getInstance(MainActivity.this);
+
+                            itemData = dbHelper.filterItemsByExpiration(newText);
+
+                            currentItemData = getItemNames(itemData);
+                            data = currentItemData;
+
+                            currentItemExpirations = getItemExpirations(itemData);
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.setType('i');
+                                    adapter.setData(new ArrayList<>(data), currentItemExpirations);
+                                }
+                            });
+                        }
+                    });
+                }
+                return false;
+            }
+        });
+
         return true;
     }
 
@@ -276,6 +464,16 @@ public class MainActivity extends AppCompatActivity {
                 SubMenu sortMenu = item.getSubMenu();
                 MenuItem sortExpiration = sortMenu.getItem(1);
                 sortExpiration.setVisible(true);
+            }
+            else if(id == R.id.filterBy) {
+                SubMenu filterMenu = item.getSubMenu();
+                MenuItem filterName = filterMenu.getItem(0);
+                MenuItem filterCategory = filterMenu.getItem(1);
+                MenuItem filterExpiration = filterMenu.getItem(2);
+
+                filterName.setVisible(true);
+                filterCategory.setVisible(true);
+                filterExpiration.setVisible(true);
             }
             else if (id == R.id.sortName) {
                 if(itemNameOrder == 0) {
@@ -342,16 +540,25 @@ public class MainActivity extends AppCompatActivity {
                 MenuItem sortExpiration = sortMenu.getItem(1);
                 sortExpiration.setVisible(false);
             }
+            else if(id == R.id.filterBy) {
+                SubMenu filterMenu = item.getSubMenu();
+                MenuItem filterName = filterMenu.getItem(0);
+                MenuItem filterCategory = filterMenu.getItem(1);
+                MenuItem filterExpiration = filterMenu.getItem(2);
+
+                filterName.setVisible(false);
+                filterCategory.setVisible(false);
+                filterExpiration.setVisible(false);
+            }
             else if(id == R.id.sortName) {
-                if(listNameOrder == 0) {
+                if (listNameOrder == 0) {
                     currentListData = getListNames(dbHelper.getAllListsDescName());
                     data = currentListData;
 
                     adapter.setData(new ArrayList<>(data));
 
                     listNameOrder++;
-                }
-                else {
+                } else {
                     currentListData = getListNames(dbHelper.getAllListsDefault());
                     data = currentListData;
 

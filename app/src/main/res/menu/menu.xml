@@ -3,17 +3,39 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/searchItem"
-        android:title="@string/search"
-        app:showAsAction="always"
-        app:actionViewClass="android.widget.SearchView" />
-
-    <item
         android:id="@+id/filterBy"
         android:icon="@drawable/filter_foreground"
         android:orderInCategory="100"
         android:title="filter by"
-        app:showAsAction="always" />
+        app:showAsAction="always">
+
+        <menu>
+
+            <item
+                android:id="@+id/filterByName"
+                android:orderInCategory="100"
+                android:title="Filter by Item Name"
+                app:showAsAction="always|collapseActionView"
+                app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+            <item
+                android:id="@+id/filterByCategory"
+                android:orderInCategory="100"
+                android:title="Filter by Item Category"
+                app:showAsAction="always|collapseActionView"
+                app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
+            <item
+                android:id="@+id/filterByExpiration"
+                android:orderInCategory="100"
+                android:title="Filter by Item Expiration"
+                app:showAsAction="always|collapseActionView"
+                app:actionViewClass="androidx.appcompat.widget.SearchView" />
+        </menu>
+
+    </item>
+
+
     <item
         android:id="@+id/sort"
         android:icon="@drawable/sort_foreground"
