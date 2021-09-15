@@ -206,6 +206,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                dbHelper = dbHelper.getInstance(MainActivity.this);
+
+                itemData = dbHelper.getAllItemsAscExpiration();
+                currentItemData = getItemNames(itemData);
+                data = currentItemData;
+                itemExpirations = getItemExpirations(itemData);
+                currentItemExpirations = itemExpirations;
+
+                currentListData = getListNames(dbHelper.getAllListsDefault());
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.setType('i');
+                        adapter.setData(new ArrayList<>(data), currentItemExpirations);
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
     public boolean onCreateOptionsMenu (Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
 
