@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -542,16 +543,17 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getReadableDatabase();
 
         Cursor c = database.query(
-                DbReferences.TABLE_NAME_LISTS,
+                DbReferences.TABLE_NAME_ITEMS,
                 new String[]{DbReferences.ITEM_ID},
                 null,
                 null,
                 null,
                 null,
-                "DESC",
+                DbReferences.ITEM_ID + " DESC",
                 "1"
         );
 
+        c.moveToNext();
         id = c.getInt(c.getColumnIndexOrThrow(DbReferences.ITEM_ID));
 
         return id;

@@ -6,11 +6,13 @@ import androidx.activity.result.ActivityResultCaller;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,6 +69,16 @@ public class MainActivity extends AppCompatActivity {
                         ));
 
                         updateItemAdapter();
+                        Log.d(TAG, "onActivityResult: recent id = " + dbHelper.getMostRecentId());
+
+                        Alarm alarm = new Alarm(dbHelper.getMostRecentId(),
+                                result.getData().getIntExtra(AddItemActivity.NEW_ITEM_YEAR_KEY, -1),
+                                result.getData().getIntExtra(AddItemActivity.NEW_ITEM_MONTH_KEY, -1),
+                                result.getData().getIntExtra(AddItemActivity.NEW_ITEM_DAY_KEY, -1),
+                                result.getData().getStringExtra(AddItemActivity.NEW_ITEM_NAME_KEY));
+
+                        alarm.schedule(MainActivity.this);
+
                     }
                     else if(result.getResultCode() == Activity.RESULT_CANCELED) {
                         Log.v(TAG, "Result Cancelled.");
@@ -203,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         this.printAllData();
+        onNewIntent(getIntent());
     }
 
     @Override
@@ -378,5 +391,36 @@ public class MainActivity extends AppCompatActivity {
 //        for(ItemList il : listData) {
 //            Log.d("MainActivity", "printAllData: " + il.toString());
 //        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.d(TAG, "onNewIntent: ");
+
+        Bundle extras = intent.getExtras();
+        if(extras != null && extras.containsKey(Alarm.NOTIF_FLAG)){
+            boolean isFromNotif = extras.getBoolean(Alarm.NOTIF_FLAG, false);
+            Log.d(TAG, "onNewIntent: isFromNotif = " + isFromNotif);
+            if(isFromNotif){
+                Intent intentService = new Intent(getApplicationContext(), AlarmService.class);
+                getApplicationContext().stopService(intentService);
+
+                showExpiryWarning();
+            }
+        }
+    }
+
+    private void showExpiryWarning(){
+        new AlertDialog.Builder(this)
+                .setTitle("Freshness checker")
+                .setMessage("an item has expired")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,7 +17,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -59,7 +64,6 @@ public class listsDetailsActivity extends AppCompatActivity {
         this.listName = findViewById(R.id.item_list_list_name_tv);
         this.backBtn = findViewById(R.id.item_list_back_btn);
         this.editBtn = findViewById(R.id.item_list_edit_btn);
-        this.deleteBtn = findViewById(R.id.item_list_delete_btn);
 
         Intent intent =  getIntent();
         this.listName.setText(intent.getStringExtra(LIST_NAME_KEY));
@@ -93,6 +97,8 @@ public class listsDetailsActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
 
         this.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,58 +110,8 @@ public class listsDetailsActivity extends AppCompatActivity {
         this.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: edit");
-                Intent intent = new Intent(getApplicationContext(), AddListActivity.class);
-                intent.putExtra(AddListActivity.TYPE_KEY, 'e');
-                intent.putExtra(AddListActivity.NAME_KEY, listName.getText());
+                Intent intent = new Intent(getApplicationContext(), AddToListActivity.class);
                 myActivityResultLauncher.launch(intent);
-            }
-        });
-
-        this.deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: delete");
-                executorService.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        myDbHelper = DbHelper.getInstance(listsDetailsActivity.this);
-                        myDbHelper.deleteListRow(listName.getText().toString());
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                adapter = new ItemAdapter(listsDetailsActivity.this, data);
-                                recyclerView.setAdapter(adapter);
-                                setResult(AddListActivity.ADD_LIST_OK, intent);
-                                finish();
-                            }
-                        });
-                    }
-                });
-            }
-        });
-
-
-    }
-
-    @Override
-    protected void onStart() {
-
-        super.onStart();
-        Intent intent = getIntent();
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                myDbHelper = DbHelper.getInstance(listsDetailsActivity.this);
-                data = myDbHelper.getItemsInList(intent.getStringExtra(LIST_NAME_KEY));
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter = new ItemAdapter(listsDetailsActivity.this, data);
-                        recyclerView.setAdapter(adapter);
-                    }
-                });
-
             }
         });
     }
