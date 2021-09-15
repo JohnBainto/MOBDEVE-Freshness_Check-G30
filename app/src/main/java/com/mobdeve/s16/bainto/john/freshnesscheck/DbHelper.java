@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -371,6 +370,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public Item searchItem(String name, String expiration) {
         SQLiteDatabase database = this.getReadableDatabase();
+        Item item = new Item();
 
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_ITEMS,
@@ -382,12 +382,16 @@ public class DbHelper extends SQLiteOpenHelper {
                 null,
             null);
 
-        Item item = new Item(c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
-                c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
-                c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)));
+        while(c.moveToNext()) {
+            item = new Item(c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)));
+        }
+
 
         c.close();
+        database.close();
 
         return item;
     }
@@ -480,9 +484,9 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public ArrayList<String> getItemsInList(String listName){
+    public ArrayList<Item> getItemsInList(String listName){
         SQLiteDatabase database = this.getReadableDatabase();
-        ArrayList<String> names = new ArrayList<String>();
+        ArrayList<Item> items = new ArrayList<Item>();
         ArrayList<Long> id = new ArrayList<Long>();
 
         Cursor c = database.query(
@@ -514,13 +518,18 @@ public class DbHelper extends SQLiteOpenHelper {
             );
             while(c.moveToNext())
             {
-                names.add(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)));
+                items.add(new Item(
+                        i,
+                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
+                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
+                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
+                ));
             }
         }
 
         c.close();
 
-        return names;
+        return items;
     }
 
     private final class DbReferences {
