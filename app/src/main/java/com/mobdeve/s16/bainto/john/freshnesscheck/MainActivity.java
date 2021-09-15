@@ -219,11 +219,13 @@ public class MainActivity extends AppCompatActivity {
         if(tabPosition == 0) {
             adapter.setType('i');
 
-            SubMenu sortMenu = item.getSubMenu();
-            MenuItem sortExpiration = sortMenu.getItem(1);
-            sortExpiration.setVisible(true);
 
-            if (id == R.id.sortName) {
+            if(id == R.id.sort) {
+                SubMenu sortMenu = item.getSubMenu();
+                MenuItem sortExpiration = sortMenu.getItem(1);
+                sortExpiration.setVisible(true);
+            }
+            else if (id == R.id.sortName) {
                 if(itemNameOrder == 0) {
                     itemData = dbHelper.getAllItemsDefault();
                     currentItemData = getItemNames(itemData);
@@ -283,7 +285,12 @@ public class MainActivity extends AppCompatActivity {
         else {
             adapter.setType('l');
 
-            if(id == R.id.sortName) {
+            if(id == R.id.sort) {
+                SubMenu sortMenu = item.getSubMenu();
+                MenuItem sortExpiration = sortMenu.getItem(1);
+                sortExpiration.setVisible(false);
+            }
+            else if(id == R.id.sortName) {
                 if(listNameOrder == 0) {
                     currentListData = getListNames(dbHelper.getAllListsDescName());
                     data = currentListData;
@@ -300,11 +307,6 @@ public class MainActivity extends AppCompatActivity {
 
                     listNameOrder--;
                 }
-            }
-            else if(id == R.id.sort) {
-                SubMenu sortMenu = item.getSubMenu();
-                MenuItem sortExpiration = sortMenu.getItem(1);
-                sortExpiration.setVisible(false);
             }
         }
 
