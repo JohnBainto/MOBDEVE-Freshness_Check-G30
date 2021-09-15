@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                                 result.getData().getStringExtra(AddItemActivity.NEW_ITEM_EXPIRATION_KEY)
                         ));
 
-                        updateAdapter();
+                        updateItemAdapter();
                     }
                     else if(result.getResultCode() == Activity.RESULT_CANCELED) {
                         Log.v(TAG, "Result Cancelled.");
@@ -74,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
                     else if(result.getResultCode() == AddListActivity.ADD_LIST_OK)
                     {
                         Log.d(TAG, "onActivityResult: " + result.getData().getStringExtra(AddListActivity.NAME_KEY));
-                        data = getListNames(dbHelper.getAllListsDefault());
+
+                        updateListAdapter();
                     }
                 }
             }
@@ -138,6 +139,8 @@ public class MainActivity extends AppCompatActivity {
 
                 currentItemData = getItemNames(itemData);
                 currentListData = getListNames(dbHelper.getAllListsDefault());
+                Log.d(TAG, "All lists default & size: " + currentListData + " " + dbHelper.getAllListsDefault().size());
+                Log.d(TAG, "All lists desc & size: " + getListNames(dbHelper.getAllListsDescName()) + " " + dbHelper.getAllListsDescName().size());
                 currentItemExpirations = itemExpirations;
 
                 runOnUiThread(new Runnable() {
@@ -214,6 +217,12 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if(tabPosition == 0) {
+            adapter.setType('i');
+
+            SubMenu sortMenu = item.getSubMenu();
+            MenuItem sortExpiration = sortMenu.getItem(1);
+            sortExpiration.setVisible(true);
+
             if (id == R.id.sortName) {
                 if(itemNameOrder == 0) {
                     itemData = dbHelper.getAllItemsDefault();
@@ -272,9 +281,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         else {
+            adapter.setType('l');
+
             if(id == R.id.sortName) {
                 if(listNameOrder == 0) {
-                    currentListData = getListNames(dbHelper.getAllListsDefault());
+                    currentListData = getListNames(dbHelper.getAllListsDescName());
                     data = currentListData;
 
                     adapter.setData(new ArrayList<>(data));
@@ -282,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
                     listNameOrder++;
                 }
                 else {
-                    currentListData = getListNames(dbHelper.getAllListsDescName());
+                    currentListData = getListNames(dbHelper.getAllListsDefault());
                     data = currentListData;
 
                     adapter.setData(new ArrayList<>(data));
@@ -290,18 +301,17 @@ public class MainActivity extends AppCompatActivity {
                     listNameOrder--;
                 }
             }
-        }
-
-        if(tabPosition == -1 && id == R.id.sort) {
-            SubMenu sortMenu = item.getSubMenu();
-            MenuItem sortExpiration = sortMenu.getItem(1);
-            sortExpiration.setVisible(false);
+            else if(id == R.id.sort) {
+                SubMenu sortMenu = item.getSubMenu();
+                MenuItem sortExpiration = sortMenu.getItem(1);
+                sortExpiration.setVisible(false);
+            }
         }
 
         return true;
     }
 
-    public void updateAdapter() {
+    public void updateItemAdapter() {
         itemData = dbHelper.getAllItemsAscExpiration();
         data = getItemNames(itemData);
 
@@ -309,6 +319,13 @@ public class MainActivity extends AppCompatActivity {
         currentItemExpirations = getItemExpirations(itemData);
 
         adapter.setData(new ArrayList<>(data), currentItemExpirations);
+    }
+
+    public void updateListAdapter() {
+        currentListData = getListNames(dbHelper.getAllListsDefault());
+        data = currentListData;
+
+        adapter.setData(new ArrayList<>(data));
     }
 
     public ArrayList<String> getItemNames(ArrayList<Item> data) {
@@ -325,9 +342,14 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0; i < data.size(); i++) {
             String name = data.get(i).getListName();
-            if(i > 0)
+            if(i > 0) {
                 if(name.compareTo(data.get(i - 1).getListName()) != 0)
                     names.add(name);
+            }
+            else {
+                names.add(name);
+            }
+
         }
 
         for(String l : names) {
