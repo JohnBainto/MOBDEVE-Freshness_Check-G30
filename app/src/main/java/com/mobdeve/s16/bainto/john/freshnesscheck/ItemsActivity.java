@@ -27,11 +27,10 @@ public class ItemsActivity extends AppCompatActivity {
 
     private DbHelper dbHelper;
 
-    private Intent intent;
     private Item item;
 
     private TextView itemName, itemCategory, itemExpiration;
-    private ImageButton backBtn, editBtn, deleteBtn;
+    private ImageButton editBtn, deleteBtn;
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
