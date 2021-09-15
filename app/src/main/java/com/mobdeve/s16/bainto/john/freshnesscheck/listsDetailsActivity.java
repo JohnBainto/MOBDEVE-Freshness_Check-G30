@@ -117,15 +117,7 @@ public class listsDetailsActivity extends AppCompatActivity {
                     public void run() {
                         myDbHelper = DbHelper.getInstance(listsDetailsActivity.this);
                         myDbHelper.deleteListRow(listName.getText().toString());
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                adapter = new ItemAdapter(listsDetailsActivity.this, data);
-                                recyclerView.setAdapter(adapter);
-                                setResult(AddListActivity.ADD_LIST_OK, intent);
-                                finish();
-                            }
-                        });
+                        finish();
                     }
                 });
             }
