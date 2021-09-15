@@ -304,18 +304,19 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public ArrayList<ItemList> filterItemsByCategory(String category) {
+    public ArrayList<Item> filterItemsByCategory(String category) {
         SQLiteDatabase database = this.getReadableDatabase();
 
         String queryString = "SELECT * FROM " + DbReferences.TABLE_NAME_ITEMS + " WHERE " + DbReferences.COLUMN_ITEM_CATEGORY + " = ? ";
         Cursor c = database.rawQuery(queryString, new String[] {category});
 
-        ArrayList<ItemList> items = new ArrayList<>();
+        ArrayList<Item> items = new ArrayList<>();
         while(c.moveToNext()) {
-            items.add(new ItemList(
-                    c.getLong(c.getColumnIndexOrThrow(DbReferences.LIST_ID)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_NAME)),
-                    c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
+            items.add(new Item(
+                    c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
             ));
         }
         c.close();
@@ -324,18 +325,20 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public ArrayList<ItemList> filterItemsByExpiration(String expiration) {
+    public ArrayList<Item> filterItemsByExpiration(String expiration) {
         SQLiteDatabase database = this.getReadableDatabase();
 
-        String queryString = "SELECT * FROM " + DbReferences.TABLE_NAME_ITEMS + " WHERE " + DbReferences.COLUMN_ITEM_CATEGORY + " = ? ";
+        String queryString = "SELECT * FROM " + DbReferences.TABLE_NAME_ITEMS + " WHERE " + DbReferences.COLUMN_ITEM_LOCAL_DATE + " = ? ";
+
         Cursor c = database.rawQuery(queryString, new String[] {expiration});
 
-        ArrayList<ItemList> items = new ArrayList<>();
+        ArrayList<Item> items = new ArrayList<>();
         while(c.moveToNext()) {
-            items.add(new ItemList(
-                    c.getLong(c.getColumnIndexOrThrow(DbReferences.LIST_ID)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_NAME)),
-                    c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
+            items.add(new Item(
+                    c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
+                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
             ));
         }
         c.close();
