@@ -3,6 +3,7 @@ package com.mobdeve.s16.bainto.john.freshnesscheck;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -20,15 +21,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ItemsActivity extends AppCompatActivity {
-
+    private static final String TAG = "ItemsActivity";
     public static final String ITEM_KEY = "ITEM_NAME_KEY";
     public static final String ITEM_KEY_TYPE = "ITEM_NAME_TYPE";
+
+    private DbHelper dbHelper;
 
     private Intent intent;
     private Item item;
 
     private TextView itemName, itemCategory, itemExpiration;
-    private ImageButton backBtn, editBtn;
+    private ImageButton backBtn, editBtn, deleteBtn;
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -53,6 +56,7 @@ public class ItemsActivity extends AppCompatActivity {
         itemExpiration = findViewById(R.id.item_details_expiry_date_tv);
         backBtn = findViewById(R.id.item_details_back_btn);
         editBtn = findViewById(R.id.item_details_edit_btn);
+        deleteBtn = findViewById(R.id.deleteItemIb);
 
         item = getIntent().getParcelableExtra(ITEM_KEY);
 
@@ -76,11 +80,26 @@ public class ItemsActivity extends AppCompatActivity {
                 myActivityResultLauncher.launch(intent);
             }
         });
+
+        this.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        dbHelper = dbHelper.getInstance(ItemsActivity.this);
+                        dbHelper.deleteItemRow(item.getName());
+                        Log.d(TAG, "Deleted item: " + item.getName());
+                        finish();
+                    }
+                });
+            }
+        });
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onRestart() {
+        super.onRestart();
 
         itemName.setText(item.getName());
         itemCategory.setText(item.getCategory());
