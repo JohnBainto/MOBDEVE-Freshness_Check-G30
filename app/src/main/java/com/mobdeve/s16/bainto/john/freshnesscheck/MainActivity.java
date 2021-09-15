@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     Log.d(TAG, "onActivityResult: ");
                     if(result.getResultCode() == Activity.RESULT_OK) {
+                        dbHelper = DbHelper.getInstance(MainActivity.this);
+
                         dbHelper.insertItem(new Item(
                                 null,
                                 result.getData().getStringExtra(AddItemActivity.NEW_ITEM_NAME_KEY),
@@ -225,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                dbHelper = dbHelper.getInstance(MainActivity.this);
+                dbHelper = DbHelper.getInstance(MainActivity.this);
 
                 itemData = dbHelper.getAllItemsAscExpiration();
                 currentItemData = getItemNames(itemData);
