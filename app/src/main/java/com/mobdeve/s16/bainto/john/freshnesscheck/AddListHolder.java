@@ -21,4 +21,8 @@ public class AddListHolder extends RecyclerView.ViewHolder {
     public void setItem(String itemName){
         item.setText(itemName);
     }
+
+    public void setChecked(boolean checked){
+        item.setChecked(checked);
+    }
 }

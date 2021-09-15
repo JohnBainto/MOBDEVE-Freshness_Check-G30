@@ -22,7 +22,10 @@ public class AddItemActivity extends AppCompatActivity {
             NEW_ITEM_NAME_KEY = "NEW_ITEM_NAME_KEY",
             NEW_ITEM_CATEGORY_KEY = "NEW_ITEM_CATEGORY_KEY",
             NEW_ITEM_EXPIRATION_KEY = "NEW_ITEM_EXPIRATION_KEY",
-            ADD_ITEM_TAG = "AddItemActivity";
+            ADD_ITEM_TAG = "AddItemActivity",
+            NEW_ITEM_YEAR_KEY = "NEW+ITEM_YEAR_KEY",
+            NEW_ITEM_MONTH_KEY = "NEW+NEW_ITEM_MONTH_KEY",
+            NEW_ITEM_DAY_KEY = "NEW+NEW_ITEM_DAY_KEY";
 
     private Calendar myCalendar = new GregorianCalendar();
 
@@ -57,6 +60,9 @@ public class AddItemActivity extends AppCompatActivity {
                     intent.putExtra(NEW_ITEM_NAME_KEY, addItemNameTv.getText().toString());
                     intent.putExtra(NEW_ITEM_CATEGORY_KEY, addItemCategoryTv.getText().toString());
                     intent.putExtra(NEW_ITEM_EXPIRATION_KEY, addItemExpirationEt.getText().toString());
+                    intent.putExtra(NEW_ITEM_YEAR_KEY, myCalendar.get(Calendar.YEAR));
+                    intent.putExtra(NEW_ITEM_MONTH_KEY, myCalendar.get(Calendar.MONTH));
+                    intent.putExtra(NEW_ITEM_DAY_KEY, myCalendar.get(Calendar.DAY_OF_MONTH));
 
                     setResult(Activity.RESULT_OK, intent);
 

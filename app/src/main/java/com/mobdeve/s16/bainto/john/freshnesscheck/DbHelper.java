@@ -455,6 +455,7 @@ public class DbHelper extends SQLiteOpenHelper {
     //method to set if the item is already in the list
     public ArrayList<Item> setInList(ArrayList<Item> items, String listName){
         SQLiteDatabase database = this.getReadableDatabase();
+        Log.d(TAG, "setInList: listname = " + listName);
 
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_LISTS,
@@ -470,8 +471,11 @@ public class DbHelper extends SQLiteOpenHelper {
         while(c.moveToNext())
         {
             for(Item i : items) {
-                if(i.getId() == c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID)));
+                Log.d(TAG, "setInList: c.id = " + c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID)));
+                Log.d(TAG, "setInList: i.id = " + i.getId());
+                if(i.getId() == c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID)))
                 {
+                    Log.d(TAG, "setInList: " + i.getName() + " got clicked");
                     i.setClicked(true);
                     break;
                 }
@@ -530,6 +534,27 @@ public class DbHelper extends SQLiteOpenHelper {
         c.close();
 
         return items;
+    }
+
+    public int getMostRecentId()
+    {
+        int id;
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        Cursor c = database.query(
+                DbReferences.TABLE_NAME_LISTS,
+                new String[]{DbReferences.ITEM_ID},
+                null,
+                null,
+                null,
+                null,
+                "DESC",
+                "1"
+        );
+
+        id = c.getInt(c.getColumnIndexOrThrow(DbReferences.ITEM_ID));
+
+        return id;
     }
 
     private final class DbReferences {
