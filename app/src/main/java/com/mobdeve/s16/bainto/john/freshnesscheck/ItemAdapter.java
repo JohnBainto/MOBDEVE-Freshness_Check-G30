@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -81,8 +82,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
         if(type == 'l')
             holder.bindData(this.data.get(position));
-        else
-            holder.bindDataSorted(this.data.get(position), this.dataExpiration.get(position));
+        else {
+            try {
+                holder.bindDataSorted(this.data.get(position), this.dataExpiration.get(position));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public int getItemCount() {
