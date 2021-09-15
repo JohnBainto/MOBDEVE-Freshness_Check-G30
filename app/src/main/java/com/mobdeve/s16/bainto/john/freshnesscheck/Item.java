@@ -41,6 +41,18 @@ public class Item implements Parcelable {
         return date;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public void setClicked(boolean isClicked)
     {
         this.isClicked = isClicked;

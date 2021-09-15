@@ -510,6 +510,8 @@ public class DbHelper extends SQLiteOpenHelper {
             id.add(c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID)));
         }
 
+        c.close();
+
         for(Long i : id) {
             c = database.query(
                     DbReferences.TABLE_NAME_ITEMS,
@@ -555,6 +557,8 @@ public class DbHelper extends SQLiteOpenHelper {
 
         c.moveToNext();
         id = c.getInt(c.getColumnIndexOrThrow(DbReferences.ITEM_ID));
+
+        c.close();
 
         return id;
     }

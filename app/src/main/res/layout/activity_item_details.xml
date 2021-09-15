@@ -12,64 +12,82 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="wrap_content">
 
         <ImageButton
             android:id="@+id/item_details_back_btn"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:adjustViewBounds="true"
             android:backgroundTint="#00FFFFFF"
+            android:contentDescription="@string/back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_back_foreground" />
+            app:srcCompat="@drawable/ic_back_foreground"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <ImageButton
             android:id="@+id/item_details_edit_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:adjustViewBounds="true"
             android:backgroundTint="#00FFFFFF"
+            android:contentDescription="@string/edit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_edit_foreground" />
+            app:srcCompat="@drawable/ic_edit_foreground"
+            tools:ignore="SpeakableTextPresentCheck" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/item_details_name_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Name"
+        android:layout_marginBottom="15dp"
+        android:gravity="start"
+        android:text="@string/name"
+        android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="24sp" />
+        android:textSize="60sp" />
 
     <TextView
-        android:id="@+id/item_details_expiry_date_tv"
+        android:id="@+id/categoryLabelTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Expiry Date"
-        android:textColor="@color/black"
-        android:textSize="24sp" />
+        android:text="@string/category"
+        android:textAllCaps="true"
+        android:textColor="@color/dark_green"
+        android:textSize="40sp" />
 
     <TextView
         android:id="@+id/item_details_category_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Category"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="start"
+        android:text="@string/category"
         android:textColor="@color/black"
-        android:textSize="24sp" />
+        android:textSize="30sp" />
 
     <TextView
-        android:id="@+id/item_details_item_list_tv"
+        android:id="@+id/expirationDateLabelTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Item Lists"
+        android:text="@string/expiration_date"
+        android:textAllCaps="true"
+        android:textColor="@color/dark_green"
+        android:textSize="40sp" />
+
+    <TextView
+        android:id="@+id/item_details_expiry_date_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:gravity="start"
+        android:text="@string/expiry_date"
         android:textColor="@color/black"
-        android:textSize="24sp" />
+        android:textSize="30sp" />
 
 </LinearLayout>
