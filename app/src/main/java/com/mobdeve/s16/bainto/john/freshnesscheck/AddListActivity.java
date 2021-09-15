@@ -50,6 +50,13 @@ public class AddListActivity extends AppCompatActivity {
         adapter = new AddListAdapter(AddListActivity.this, items);
         recyclerView.setAdapter(adapter);
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         Intent intent = getIntent();
         type = intent.getCharExtra(TYPE_KEY, 'a');
         if(type == 'e')
