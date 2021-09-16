@@ -130,7 +130,6 @@ public class AddItemActivity extends AppCompatActivity {
     };
 
     private void updateDate() {
-        String myFormat = "dd/MM/yy"; //put your date format in which you need to display
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         addItemExpirationEt.setText(sdf.format(myCalendar.getTime()));
