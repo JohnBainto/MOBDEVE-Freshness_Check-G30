@@ -27,12 +27,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Item item;
 
-    public ItemAdapter(Context context, ArrayList<String> data) {
-        this.context = context;
-        this.data = data;
-        this.type = 'i';
-    }
-
     public ItemAdapter(ArrayList<String> data, ActivityResultLauncher<Intent> myActivityResultLauncher) {
         this.data = data;
         this.myActivityResultLauncher = myActivityResultLauncher;
