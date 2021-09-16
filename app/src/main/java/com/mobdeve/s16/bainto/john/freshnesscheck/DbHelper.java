@@ -61,7 +61,6 @@ public class DbHelper extends SQLiteOpenHelper {
             ));
         }
         c.close();
-        database.close();
 
         return items;
     }
@@ -88,7 +87,6 @@ public class DbHelper extends SQLiteOpenHelper {
             ));
         }
         c.close();
-        database.close();
 
         return items;
     }
@@ -115,7 +113,6 @@ public class DbHelper extends SQLiteOpenHelper {
             ));
         }
         c.close();
-        database.close();
 
         return items;
     }
@@ -142,7 +139,6 @@ public class DbHelper extends SQLiteOpenHelper {
             ));
         }
         c.close();
-        database.close();
 
         return items;
     }
@@ -169,7 +165,6 @@ public class DbHelper extends SQLiteOpenHelper {
             ));
         }
         c.close();
-        database.close();
 
         return lists;
     }
@@ -196,7 +191,6 @@ public class DbHelper extends SQLiteOpenHelper {
             ));
         }
         c.close();
-        database.close();
 
         return lists;
     }
@@ -210,8 +204,6 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put(DbReferences.COLUMN_ITEM_LOCAL_DATE, i.getDate());
 
         database.insert(DbReferences.TABLE_NAME_ITEMS, null, values);
-
-        database.close();
     }
 
     public synchronized void insertList(ItemList l) {
@@ -222,8 +214,6 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put(DbReferences.COLUMN_LIST_ITEMS_ID, l.getItemId());
 
         database.insert(DbReferences.TABLE_NAME_LISTS, null, values);
-
-        database.close();
     }
 
     public ArrayList<Item> filterItemsByName(String name) {
@@ -267,7 +257,6 @@ public class DbHelper extends SQLiteOpenHelper {
             ));
         }
         c.close();
-        database.close();
 
         return items;
     }
@@ -289,7 +278,6 @@ public class DbHelper extends SQLiteOpenHelper {
             ));
         }
         c.close();
-        database.close();
 
         return items;
     }
@@ -317,7 +305,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
 
         c.close();
-        database.close();
 
         return item;
     }
@@ -350,16 +337,12 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
 
         database.delete(DbReferences.TABLE_NAME_ITEMS, DbReferences.COLUMN_ITEM_NAME + "=?", new String[]{name});
-
-        database.close();
     }
 
     public void  deleteListRow(String name) {
         SQLiteDatabase database = this.getWritableDatabase();
 
         database.delete(DbReferences.TABLE_NAME_LISTS,DbReferences.COLUMN_LIST_NAME + "=?", new String[] {name});
-
-        database.close();
     }
 
     //method to set if the item is already in the list
@@ -393,7 +376,6 @@ public class DbHelper extends SQLiteOpenHelper {
         }
 
         c.close();
-        database.close();
 
         return items;
     }
@@ -419,27 +401,27 @@ public class DbHelper extends SQLiteOpenHelper {
             id.add(c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID)));
         }
 
-        c.close();
-
-        for(Long i : id) {
-            c = database.query(
-                    DbReferences.TABLE_NAME_ITEMS,
-                    null,
-                    DbReferences.ITEM_ID + " = ?",
-                    new String[]{i.toString()},
-                    null,
-                    null,
-                    null,
-                    null
-            );
-            while(c.moveToNext())
-            {
-                items.add(new Item(
-                        i,
-                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
-                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
-                ));
+        if(!id.isEmpty()) {
+            for(Long i : id) {
+                c = database.query(
+                        DbReferences.TABLE_NAME_ITEMS,
+                        null,
+                        DbReferences.ITEM_ID + " = ?",
+                        new String[]{i.toString()},
+                        null,
+                        null,
+                        null,
+                        null
+                );
+                while(c.moveToNext())
+                {
+                    items.add(new Item(
+                            i,
+                            c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
+                            c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
+                            c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
+                    ));
+                }
             }
         }
 
@@ -470,7 +452,6 @@ public class DbHelper extends SQLiteOpenHelper {
         id = c.getInt(c.getColumnIndexOrThrow(DbReferences.ITEM_ID));
 
         c.close();
-        database.close();
 
         return id;
     }
