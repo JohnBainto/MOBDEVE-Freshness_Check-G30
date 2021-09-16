@@ -25,8 +25,8 @@ public class listsDetailsActivity extends AppCompatActivity {
     public static final String LIST_NAME_KEY = "LIST_NAME_KEY";
     private static final String TAG = "listDetailsActivity";
 
-    private ArrayList<Item> itemData = new ArrayList<Item>();
-    private ArrayList<String> itemNames = new ArrayList<String>();
+    private ArrayList<Item> itemData = new ArrayList<>();
+    private ArrayList<String> itemNames = new ArrayList<>();
     private RecyclerView recyclerView;
     private TextView listName;
     private ImageButton backBtn, editBtn, deleteBtn;
@@ -36,7 +36,7 @@ public class listsDetailsActivity extends AppCompatActivity {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private DbHelper myDbHelper;
 
-    private ArrayList<String> data = new ArrayList<String>();
+    private ArrayList<String> data = new ArrayList<>();
 
     private ActivityResultLauncher<Intent> myActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -127,9 +127,9 @@ public class listsDetailsActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
+    protected void onRestart() {
 
-        super.onStart();
+        super.onRestart();
         Intent intent = getIntent();
         executorService.execute(new Runnable() {
             @Override
