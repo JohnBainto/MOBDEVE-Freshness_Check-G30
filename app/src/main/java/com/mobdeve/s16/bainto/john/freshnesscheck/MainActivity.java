@@ -231,14 +231,14 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             if(tabPosition == 0) {
                                 adapter.setType('i');
+
                                 adapter.setData(new ArrayList<>(data), currentItemExpirations);
-                                recyclerView.setAdapter(adapter);
                             }
                             else {
                                 adapter.setType('l');
+
                                 data = currentListData;
                                 adapter.setData(new ArrayList<>(data));
-                                recyclerView.setAdapter(adapter);
                             }
                     }
                 });
