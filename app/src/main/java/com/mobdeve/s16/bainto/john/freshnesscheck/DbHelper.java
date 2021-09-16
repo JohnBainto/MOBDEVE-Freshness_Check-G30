@@ -226,7 +226,9 @@ public class DbHelper extends SQLiteOpenHelper {
     public ArrayList<Item> filterItemsByName(String name) {
         SQLiteDatabase database = this.getReadableDatabase();
 
-        String queryString = "SELECT * FROM " + DbReferences.TABLE_NAME_ITEMS + " WHERE " + DbReferences.COLUMN_ITEM_NAME + " = ? ";
+        name = name + "%";
+
+        String queryString = "SELECT * FROM " + DbReferences.TABLE_NAME_ITEMS + " WHERE " + DbReferences.COLUMN_ITEM_NAME + " LIKE ? ";
         Cursor c = database.rawQuery(queryString, new String[] {name});
 
         ArrayList<Item> items = new ArrayList<>();
@@ -251,7 +253,9 @@ public class DbHelper extends SQLiteOpenHelper {
     public ArrayList<Item> filterItemsByCategory(String category) {
         SQLiteDatabase database = this.getReadableDatabase();
 
-        String queryString = "SELECT * FROM " + DbReferences.TABLE_NAME_ITEMS + " WHERE " + DbReferences.COLUMN_ITEM_CATEGORY + " = ? ";
+        category = category + "%";
+
+        String queryString = "SELECT * FROM " + DbReferences.TABLE_NAME_ITEMS + " WHERE " + DbReferences.COLUMN_ITEM_CATEGORY + " LIKE ? ";
         Cursor c = database.rawQuery(queryString, new String[] {category});
 
         ArrayList<Item> items = new ArrayList<>();
@@ -272,18 +276,27 @@ public class DbHelper extends SQLiteOpenHelper {
     public ArrayList<Item> filterItemsByExpiration(String expiration) {
         SQLiteDatabase database = this.getReadableDatabase();
 
-        String queryString = "SELECT * FROM " + DbReferences.TABLE_NAME_ITEMS + " WHERE " + DbReferences.COLUMN_ITEM_LOCAL_DATE + " = ? ";
-
-        Cursor c = database.rawQuery(queryString, new String[] {expiration});
+        Cursor c = database.query(
+                DbReferences.TABLE_NAME_ITEMS,
+                null,
+                null,
+                null,
+                null,
+                null,
+                DbReferences.COLUMN_ITEM_LOCAL_DATE + " ASC",
+                null
+        );
 
         ArrayList<Item> items = new ArrayList<>();
         while(c.moveToNext()) {
-            items.add(new Item(
-                    c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
-            ));
+            if(c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE)).compareTo(expiration) <= 0) {
+                items.add(new Item(
+                        c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
+                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
+                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
+                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
+                ));
+            }
         }
         c.close();
 
