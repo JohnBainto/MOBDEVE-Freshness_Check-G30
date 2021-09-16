@@ -1,6 +1,9 @@
 package com.mobdeve.s16.bainto.john.freshnesscheck;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +27,9 @@ public class ItemsActivity extends AppCompatActivity {
     private static final String TAG = "ItemsActivity";
     public static final String ITEM_KEY = "ITEM_NAME_KEY";
     public static final String ITEM_KEY_TYPE = "ITEM_NAME_TYPE";
+    public static final String DELETED_ID = "DELETED_ID";
+    public static final String DELETED_EXPIRY = "DELETED_EXPIRY";
+    public static final int DELETE_ITEM_OK = 9876;
 
     private DbHelper dbHelper;
 
@@ -87,6 +93,11 @@ public class ItemsActivity extends AppCompatActivity {
                         dbHelper = dbHelper.getInstance(ItemsActivity.this);
                         dbHelper.deleteItemRow(item.getId());
                         Log.d(TAG, "Remaining items: " + getItemNames(dbHelper.getAllItemsDefault()));
+
+                        Intent intent = new Intent();
+                        intent.putExtra(DELETED_ID, (int)item.getId());
+                        intent.putExtra(DELETED_EXPIRY, item.getDate());
+                        setResult(DELETE_ITEM_OK, intent);
                         finish();
                     }
                 });

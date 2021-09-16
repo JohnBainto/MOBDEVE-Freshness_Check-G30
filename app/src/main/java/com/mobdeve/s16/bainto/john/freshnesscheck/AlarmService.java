@@ -27,12 +27,12 @@ public class AlarmService extends Service {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        Log.d("AlarmService", "Get Notif! " + itemName + " " + alarmId);
+        Log.d("AlarmService", "Get Notif " + itemName + " " + alarmId);
 
         Notification notification = new NotificationCompat.Builder(this, App.CHANNEL_ID)
-                .setContentTitle(itemName + " " + alarmId)
+                .setContentTitle("Freshness Checker")
                 .setContentText(itemName + " is expired.")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.checklist)
                 .setContentIntent(pendingIntent)
                 .build();
 

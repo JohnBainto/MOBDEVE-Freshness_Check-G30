@@ -6,9 +6,9 @@
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/checklist_background"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/checklist_background"
         android:supportsRtl="true"
         android:theme="@style/Theme.FreshnessCheck">
         <activity android:name=".AddItemActivity"></activity>
@@ -25,9 +25,6 @@
                 android:resource="@xml/searchable" />
         </activity>
         <receiver android:name=".AlarmReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
         </receiver>
         <service android:name=".AlarmService" />
     </application>

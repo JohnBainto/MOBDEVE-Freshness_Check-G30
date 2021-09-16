@@ -88,6 +88,7 @@ public class DbHelper extends SQLiteOpenHelper {
         }
         c.close();
 
+
         return items;
     }
 
@@ -113,6 +114,7 @@ public class DbHelper extends SQLiteOpenHelper {
             ));
         }
         c.close();
+
 
         return items;
     }
@@ -140,6 +142,7 @@ public class DbHelper extends SQLiteOpenHelper {
         }
         c.close();
 
+
         return items;
     }
 
@@ -165,6 +168,7 @@ public class DbHelper extends SQLiteOpenHelper {
             ));
         }
         c.close();
+
 
         return lists;
     }
@@ -192,6 +196,7 @@ public class DbHelper extends SQLiteOpenHelper {
         }
         c.close();
 
+
         return lists;
     }
 
@@ -204,6 +209,7 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put(DbReferences.COLUMN_ITEM_LOCAL_DATE, i.getDate());
 
         database.insert(DbReferences.TABLE_NAME_ITEMS, null, values);
+
     }
 
     public synchronized void insertList(ItemList l) {
@@ -214,6 +220,7 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put(DbReferences.COLUMN_LIST_ITEMS_ID, l.getItemId());
 
         database.insert(DbReferences.TABLE_NAME_LISTS, null, values);
+
     }
 
     public ArrayList<Item> filterItemsByName(String name) {
@@ -258,6 +265,7 @@ public class DbHelper extends SQLiteOpenHelper {
         }
         c.close();
 
+
         return items;
     }
 
@@ -278,6 +286,7 @@ public class DbHelper extends SQLiteOpenHelper {
             ));
         }
         c.close();
+
 
         return items;
     }
@@ -304,6 +313,7 @@ public class DbHelper extends SQLiteOpenHelper {
         }
 
         c.close();
+
 
         return item;
     }
@@ -337,13 +347,14 @@ public class DbHelper extends SQLiteOpenHelper {
 
         database.delete(DbReferences.TABLE_NAME_ITEMS, DbReferences.ITEM_ID + "=?", new String[] {String.valueOf(id)});
 
-        database.close();
+//        database.close();
     }
 
     public void  deleteListRow(String name) {
         SQLiteDatabase database = this.getWritableDatabase();
 
         database.delete(DbReferences.TABLE_NAME_LISTS,DbReferences.COLUMN_LIST_NAME + "=?", new String[] {name});
+
     }
 
     //method to set if the item is already in the list
@@ -377,6 +388,7 @@ public class DbHelper extends SQLiteOpenHelper {
         }
 
         c.close();
+
 
         return items;
     }
@@ -453,6 +465,7 @@ public class DbHelper extends SQLiteOpenHelper {
         id = c.getInt(c.getColumnIndexOrThrow(DbReferences.ITEM_ID));
 
         c.close();
+
 
         return id;
     }
