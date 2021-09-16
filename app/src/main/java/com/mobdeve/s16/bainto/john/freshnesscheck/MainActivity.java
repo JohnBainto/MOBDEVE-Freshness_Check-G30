@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -297,6 +298,22 @@ public class MainActivity extends AppCompatActivity {
         MenuItem filterByExpiration = menu.findItem(R.id.filterByExpiration);
         SearchView searchExpiration = (SearchView) filterByExpiration.getActionView();
         searchExpiration.setQueryHint("");
+
+        menu.findItem(R.id.filterByExpiration).setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                data = currentItemData;
+                
+                adapter.setData(new ArrayList<>(data), currentItemExpirations);
+                recyclerView.setAdapter(adapter);
+                return true;
+            }
+        });
 
         filterByExpiration.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
