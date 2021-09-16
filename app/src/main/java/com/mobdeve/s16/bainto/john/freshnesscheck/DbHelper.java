@@ -562,6 +562,7 @@ public class DbHelper extends SQLiteOpenHelper {
         id = c.getInt(c.getColumnIndexOrThrow(DbReferences.ITEM_ID));
 
         c.close();
+        database.close();
 
         return id;
     }
