@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,12 +23,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.widget.DatePicker;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,11 +47,14 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> currentItemData = new ArrayList<String>();
     private ArrayList<String> currentListData = new ArrayList<String>();
     private ArrayList<Item> itemData = new ArrayList<Item>();
-
+    private Calendar myCalendar = new GregorianCalendar();
+    
     private RecyclerView recyclerView;
     private ItemAdapter adapter;
 
     private FloatingActionButton addBtn;
+    private MenuItem filterByExpiration;
+    private SearchView searchExpiration;
 
     private int itemNameOrder = 0;
     private int itemExpOrder = 0;
@@ -127,27 +135,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 dbHelper = DbHelper.getInstance(MainActivity.this);
-
-
-                /*Item item1 = new Item(null, "bread", "carbs", "21/01/20");
-                Item item2 = new Item(null, "apple juice", "liquid", "21/01/25");
-                Item item3 = new Item(null, "iced tea", "liquid", "21/01/31");
-                dbHelper.insertItem(item1);
-                dbHelper.insertItem(item2);
-                dbHelper.insertItem(item3);*/
-
-                /*ItemList list1 = new ItemList(null,"breakfast", dbHelper.filterItemsByName("bread").get(0).getId());
-                ItemList list2 = new ItemList(null, "drinks", dbHelper.filterItemsByName("apple juice").get(0).getId());
-                ItemList list3 = new ItemList(null, "drinks", dbHelper.filterItemsByName("iced tea").get(0).getId());
-
-                dbHelper.insertList(list1);
-                dbHelper.insertList(list2);
-                dbHelper.insertList(list3);*/
-
-
-                /*dbHelper.deleteItemRow("bread");
-                dbHelper.deleteItemRow("apple juice");
-                dbHelper.deleteItemRow("iced tea");*/
 
                 itemData = dbHelper.getAllItemsAscExpiration();
                 data = getItemNames(itemData);
@@ -272,8 +259,18 @@ public class MainActivity extends AppCompatActivity {
         searchCategory.setQueryHint("");
 
         MenuItem filterByExpiration = menu.findItem(R.id.filterByExpiration);
-        SearchView searchExpiration = (SearchView) filterByExpiration.getActionView();
-        searchExpiration.setQueryHint("");
+        /*SearchView searchExpiration = (SearchView) filterByExpiration.getActionView();
+        searchExpiration.setQueryHint("");*/
+
+        filterByExpiration.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                new DatePickerDialog(MainActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                return true;
+            }
+        });
 
         searchName.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -371,64 +368,6 @@ public class MainActivity extends AppCompatActivity {
                             dbHelper = DbHelper.getInstance(MainActivity.this);
 
                             itemData = dbHelper.filterItemsByCategory(newText);
-
-                            currentItemData = getItemNames(itemData);
-                            data = currentItemData;
-
-                            currentItemExpirations = getItemExpirations(itemData);
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    adapter.setType('i');
-                                    adapter.setData(new ArrayList<>(data), currentItemExpirations);
-                                }
-                            });
-                        }
-                    });
-                }
-                return false;
-            }
-        });
-
-        searchExpiration.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if(newText.compareTo("") == 0) {
-                    executorService.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            dbHelper = DbHelper.getInstance(MainActivity.this);
-
-                            itemData = dbHelper.getAllItemsAscExpiration();
-
-                            currentItemData = getItemNames(itemData);
-                            data = currentItemData;
-
-                            currentItemExpirations = getItemExpirations(itemData);
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    adapter.setType('i');
-                                    adapter.setData(new ArrayList<>(data), currentItemExpirations);
-                                }
-                            });
-                        }
-                    });
-                }
-                else {
-                    executorService.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            dbHelper = DbHelper.getInstance(MainActivity.this);
-
-                            itemData = dbHelper.filterItemsByExpiration(newText);
 
                             currentItemData = getItemNames(itemData);
                             data = currentItemData;
@@ -627,6 +566,40 @@ public class MainActivity extends AppCompatActivity {
             expirations.add(data.get(i).getDate());
 
         return expirations;
+    }
+
+    final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateDate();
+        }
+    };
+
+    private void updateDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                dbHelper = DbHelper.getInstance(MainActivity.this);
+
+                itemData = dbHelper.filterItemsByExpiration(sdf.format(myCalendar.getTime()));
+                data = getItemNames(itemData);
+
+                itemExpirations = getItemExpirations(itemData);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.setType('i');
+                        adapter.setData(new ArrayList<>(data), itemExpirations);
+                    }
+                });
+            }
+        });
     }
 
     private void printAllData() {
