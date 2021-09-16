@@ -30,7 +30,7 @@ public class AlarmService extends Service {
         Log.d("AlarmService", "Get Notif " + itemName + " " + alarmId);
 
         Notification notification = new NotificationCompat.Builder(this, App.CHANNEL_ID)
-                .setContentTitle("Freshness Checker")
+                .setContentTitle("Expiration Notice")
                 .setContentText(itemName + " is expired.")
                 .setSmallIcon(R.drawable.checklist)
                 .setContentIntent(pendingIntent)
