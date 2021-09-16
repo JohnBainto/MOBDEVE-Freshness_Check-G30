@@ -97,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(result.getResultCode() == Activity.RESULT_CANCELED) {
                         Log.v(TAG, "Result Cancelled.");
+
+                        updateItemAdapter();
                     }
                     else if(result.getResultCode() == AddListActivity.ADD_LIST_OK)
                     {
@@ -122,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                             alarm.deleteAlarm(MainActivity.this);
                         }
 
+                        updateItemAdapter();
                     }
                 }
             }
@@ -211,6 +214,8 @@ public class MainActivity extends AppCompatActivity {
                                 else {
                                     adapter.setData(new ArrayList<>(data));
                                 }
+
+                                recyclerView.setAdapter(adapter);
                             }
                         });
                     }
@@ -242,27 +247,39 @@ public class MainActivity extends AppCompatActivity {
 
                 itemData = dbHelper.getAllItemsAscExpiration();
                 currentItemData = getItemNames(itemData);
-                data = currentItemData;
                 itemExpirations = getItemExpirations(itemData);
                 currentItemExpirations = itemExpirations;
 
                 currentListData = getListNames(dbHelper.getAllListsDefault());
 
+                Log.d(TAG, "onRestart");
+
+                if(tabPosition == 0) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(tabPosition == 0) {
-                                adapter.setType('i');
-                                adapter = new ItemAdapter(new ArrayList<>(data), newItemResultLauncher);
-                                adapter.setData(new ArrayList<>(data), currentItemExpirations);
-                            }
-                            else {
-                                adapter.setType('l');
-                                adapter = new ItemAdapter(new ArrayList<>(data), newItemResultLauncher);
-                                adapter.setData(new ArrayList<>(data));
-                            }
-                    }
-                });
+                            data = currentItemData;
+
+                            adapter = new ItemAdapter(new ArrayList<>(data), newItemResultLauncher);
+                            adapter.setType('i');
+                            adapter.setData(new ArrayList<>(data), currentItemExpirations);
+                            recyclerView.setAdapter(adapter);
+                        }
+                    });
+                }
+                else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            data = currentListData;
+
+                            adapter = new ItemAdapter(new ArrayList<>(data), newItemResultLauncher);
+                            adapter.setType('l');
+                            adapter.setData(new ArrayList<>(data));
+                            recyclerView.setAdapter(adapter);
+                        }
+                    });
+                }
             }
         });
     }
@@ -534,19 +551,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateItemAdapter() {
         itemData = dbHelper.getAllItemsAscExpiration();
-        data = getItemNames(itemData);
-
         currentItemData = getItemNames(itemData);
+        data = currentItemData;
+
         currentItemExpirations = getItemExpirations(itemData);
 
         adapter.setData(new ArrayList<>(data), currentItemExpirations);
+        adapter.setType('i');
+        recyclerView.setAdapter(adapter);
     }
 
     public void updateListAdapter() {
         currentListData = getListNames(dbHelper.getAllListsDefault());
         data = currentListData;
 
+
+        adapter.setType('l');
         adapter.setData(new ArrayList<>(data));
+        recyclerView.setAdapter(adapter);
     }
 
     public ArrayList<String> getItemNames(ArrayList<Item> data) {
