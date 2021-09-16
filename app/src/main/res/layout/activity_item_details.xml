@@ -60,7 +60,7 @@
         android:text="@string/category"
         android:textAllCaps="true"
         android:textColor="@color/dark_green"
-        android:textSize="30sp" />
+        android:textSize="25sp" />
 
     <TextView
         android:id="@+id/item_details_category_tv"
@@ -71,7 +71,7 @@
         android:gravity="start"
         android:text="@string/category"
         android:textColor="@color/black"
-        android:textSize="25sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/expirationDateLabelTv"
@@ -80,7 +80,7 @@
         android:text="@string/expiration_date"
         android:textAllCaps="true"
         android:textColor="@color/dark_green"
-        android:textSize="30sp" />
+        android:textSize="25sp" />
 
     <TextView
         android:id="@+id/item_details_expiry_date_tv"
@@ -90,6 +90,6 @@
         android:gravity="start"
         android:text="@string/expiry_date"
         android:textColor="@color/black"
-        android:textSize="25sp" />
+        android:textSize="20sp" />
 
 </LinearLayout>
