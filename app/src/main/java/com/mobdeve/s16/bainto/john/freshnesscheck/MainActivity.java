@@ -259,8 +259,8 @@ public class MainActivity extends AppCompatActivity {
         searchCategory.setQueryHint("");
 
         MenuItem filterByExpiration = menu.findItem(R.id.filterByExpiration);
-        /*SearchView searchExpiration = (SearchView) filterByExpiration.getActionView();
-        searchExpiration.setQueryHint("");*/
+        SearchView searchExpiration = (SearchView) filterByExpiration.getActionView();
+        searchExpiration.setQueryHint("");
 
         filterByExpiration.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
