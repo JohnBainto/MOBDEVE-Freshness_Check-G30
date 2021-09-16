@@ -93,8 +93,8 @@ public class AddItemActivity extends AppCompatActivity {
                             dbHelper = dbHelper.getInstance(AddItemActivity.this);
 
                             dbHelper.updateItemName(addItemNameTv.getText().toString(), item.getId(), item.getName());
-                            dbHelper.updateItemCategory(addItemCategoryTv.getText().toString(), item.getId(), item.getName());
-                            dbHelper.updateItemExpiration(addItemExpirationEt.getText().toString(), item.getId(), item.getName());
+                            dbHelper.updateItemCategory(addItemCategoryTv.getText().toString(), item.getId(), item.getCategory());
+                            dbHelper.updateItemExpiration(addItemExpirationEt.getText().toString(), item.getId(), item.getDate());
 
                             item.setName(addItemNameTv.getText().toString());
                             item.setCategory(addItemCategoryTv.getText().toString());
