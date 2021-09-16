@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
                             alarm.deleteAlarm(MainActivity.this);
                         }
 
-                        updateItemAdapter();
                     }
                 }
             }
@@ -214,8 +213,6 @@ public class MainActivity extends AppCompatActivity {
                                 else {
                                     adapter.setData(new ArrayList<>(data));
                                 }
-
-                                recyclerView.setAdapter(adapter);
                             }
                         });
                     }
@@ -247,6 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
                 itemData = dbHelper.getAllItemsAscExpiration();
                 currentItemData = getItemNames(itemData);
+                data = currentItemData;
                 itemExpirations = getItemExpirations(itemData);
                 currentItemExpirations = itemExpirations;
 
@@ -551,24 +549,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateItemAdapter() {
         itemData = dbHelper.getAllItemsAscExpiration();
-        currentItemData = getItemNames(itemData);
-        data = currentItemData;
+        data = getItemNames(itemData);
 
+        currentItemData = getItemNames(itemData);
         currentItemExpirations = getItemExpirations(itemData);
 
         adapter.setData(new ArrayList<>(data), currentItemExpirations);
-        adapter.setType('i');
-        recyclerView.setAdapter(adapter);
     }
 
     public void updateListAdapter() {
         currentListData = getListNames(dbHelper.getAllListsDefault());
         data = currentListData;
 
-
-        adapter.setType('l');
         adapter.setData(new ArrayList<>(data));
-        recyclerView.setAdapter(adapter);
     }
 
     public ArrayList<String> getItemNames(ArrayList<Item> data) {
