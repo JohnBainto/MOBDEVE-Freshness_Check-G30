@@ -41,6 +41,12 @@ public class ItemsActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     if(result.getResultCode() == Activity.RESULT_OK) {
                         item = result.getData().getParcelableExtra(AddItemActivity.EDIT_ITEM_TAG);
+
+                        Log.d(TAG, "Item name: " + item.getName() + "Item Category: " + item.getCategory() + " Item Expiration: " + item.getDate());
+
+                        itemName.setText(item.getName());
+                        itemCategory.setText(item.getCategory());
+                        itemExpiration.setText(item.getDate());
                     }
                 }
             });
@@ -86,17 +92,6 @@ public class ItemsActivity extends AppCompatActivity {
                 });
             }
         });
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-
-        itemName.setText(item.getName());
-        itemCategory.setText(item.getCategory());
-        itemExpiration.setText(item.getDate());
-
-        Log.d(TAG, "Item name: " + item.getName() + "Item Category: " + item.getCategory() + "Item Expiration: " + item.getDate());
     }
 
     //for debugging
