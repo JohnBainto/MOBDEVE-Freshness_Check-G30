@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class DbHelper extends SQLiteOpenHelper {
     private static final String TAG = "DbHelper";
@@ -443,6 +444,8 @@ public class DbHelper extends SQLiteOpenHelper {
         }
 
         c.close();
+
+        Collections.sort(items, Item.COMPARE_BY_EXPIRATION);
 
         return items;
     }
