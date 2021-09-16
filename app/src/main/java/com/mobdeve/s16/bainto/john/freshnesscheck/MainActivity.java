@@ -97,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(result.getResultCode() == Activity.RESULT_CANCELED) {
                         Log.v(TAG, "Result Cancelled.");
+
+                        updateItemAdapter();
                     }
                     else if(result.getResultCode() == AddListActivity.ADD_LIST_OK)
                     {
@@ -248,23 +250,34 @@ public class MainActivity extends AppCompatActivity {
 
                 currentListData = getListNames(dbHelper.getAllListsDefault());
 
+                Log.d(TAG, "onRestart");
+
+                if(tabPosition == 0) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(tabPosition == 0) {
-                                adapter.setType('i');
-                                adapter = new ItemAdapter(new ArrayList<>(data), newItemResultLauncher);
-                                recyclerView.setAdapter(adapter);
-                                adapter.setData(new ArrayList<>(data), currentItemExpirations);
-                            }
-                            else {
-                                adapter.setType('l');
-                                adapter = new ItemAdapter(new ArrayList<>(data), newItemResultLauncher);
-                                recyclerView.setAdapter(adapter);
-                                adapter.setData(new ArrayList<>(data));
-                            }
-                    }
-                });
+                            data = currentItemData;
+
+                            adapter = new ItemAdapter(new ArrayList<>(data), newItemResultLauncher);
+                            adapter.setType('i');
+                            adapter.setData(new ArrayList<>(data), currentItemExpirations);
+                            recyclerView.setAdapter(adapter);
+                        }
+                    });
+                }
+                else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            data = currentListData;
+
+                            adapter = new ItemAdapter(new ArrayList<>(data), newItemResultLauncher);
+                            adapter.setType('l');
+                            adapter.setData(new ArrayList<>(data));
+                            recyclerView.setAdapter(adapter);
+                        }
+                    });
+                }
             }
         });
     }
