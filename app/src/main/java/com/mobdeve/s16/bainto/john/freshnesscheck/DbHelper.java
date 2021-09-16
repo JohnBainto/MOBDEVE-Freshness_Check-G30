@@ -316,7 +316,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 null,
-            null);
+                null);
 
         while(c.moveToNext()) {
             item = new Item(c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
