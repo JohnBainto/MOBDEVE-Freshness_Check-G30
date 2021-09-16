@@ -28,7 +28,7 @@
             <item
                 android:id="@+id/filterByExpiration"
                 android:orderInCategory="100"
-                android:title="Filter by Item Expiration (Expired)"
+                android:title="Filter by Item Expiration"
                 app:showAsAction="always|collapseActionView"
                 app:actionViewClass="androidx.appcompat.widget.SearchView" />
         </menu>
