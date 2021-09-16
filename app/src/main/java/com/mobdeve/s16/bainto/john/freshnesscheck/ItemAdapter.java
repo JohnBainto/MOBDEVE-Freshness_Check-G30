@@ -2,7 +2,6 @@ package com.mobdeve.s16.bainto.john.freshnesscheck;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,12 +26,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     private char type;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Item item;
-
-    public ItemAdapter(Context context, ArrayList<String> data) {
-        this.context = context;
-        this.data = data;
-        this.type = 'i';
-    }
 
     public ItemAdapter(ArrayList<String> data, ActivityResultLauncher<Intent> myActivityResultLauncher) {
         this.data = data;
@@ -81,10 +74,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     }
 
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
-        if(type == 'l'){
+        if(type == 'l')
             holder.bindData(this.data.get(position));
-            holder.setColor(Color.BLACK);
-        }
         else {
             try {
                 holder.bindDataSorted(this.data.get(position), this.dataExpiration.get(position));

@@ -91,7 +91,7 @@ public class ItemsActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         dbHelper = dbHelper.getInstance(ItemsActivity.this);
-                        dbHelper.deleteItemRow(item.getName());
+                        dbHelper.deleteItemRow(item.getId());
                         Log.d(TAG, "Remaining items: " + getItemNames(dbHelper.getAllItemsDefault()));
 
                         Intent intent = new Intent();

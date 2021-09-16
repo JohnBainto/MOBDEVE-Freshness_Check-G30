@@ -36,8 +36,4 @@ public class ItemHolder extends RecyclerView.ViewHolder {
             this.name.setTextColor(Color.RED);
         }
     }
-
-    public void setColor(int color){
-        this.name.setTextColor(color);
-    }
 }
