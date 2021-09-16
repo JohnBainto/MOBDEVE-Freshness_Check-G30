@@ -95,6 +95,8 @@ public class ItemsActivity extends AppCompatActivity {
         itemName.setText(item.getName());
         itemCategory.setText(item.getCategory());
         itemExpiration.setText(item.getDate());
+
+        Log.d(TAG, "Item name: " + item.getName() + "Item Category: " + item.getCategory() + "Item Expiration: " + item.getDate());
     }
 
     //for debugging
