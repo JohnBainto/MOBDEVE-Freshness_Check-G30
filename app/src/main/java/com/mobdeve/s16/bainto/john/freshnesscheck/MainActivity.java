@@ -17,6 +17,7 @@ import android.app.DatePickerDialog;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,10 +29,12 @@ import android.widget.DatePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
@@ -100,6 +103,25 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "onActivityResult: " + result.getData().getStringExtra(AddListActivity.NAME_KEY));
 
                         updateListAdapter();
+                    }
+                    else if(result.getResultCode() == ItemsActivity.DELETE_ITEM_OK){
+                        String stringDate = result.getData().getStringExtra(ItemsActivity.DELETED_EXPIRY);
+                        Date expiryDate = null;
+                        try {
+                            expiryDate = new SimpleDateFormat("yyyy-MM-dd").parse(stringDate);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        if(expiryDate.after(new Date())){
+                            Alarm alarm = new Alarm(result.getData().getIntExtra(ItemsActivity.DELETED_ID, -1),
+                                    0,
+                                    0,
+                                    0,
+                                    null);
+
+                            alarm.deleteAlarm(MainActivity.this);
+                        }
+
                     }
                 }
             }
