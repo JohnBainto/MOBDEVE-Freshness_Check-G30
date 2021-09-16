@@ -92,60 +92,6 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public ArrayList<Item> getAllItemsAscCategory() {
-        SQLiteDatabase database = this.getReadableDatabase();
-        Cursor c = database.query(
-                DbReferences.TABLE_NAME_ITEMS,
-                null,
-                null,
-                null,
-                null,
-                null,
-                DbReferences.COLUMN_ITEM_CATEGORY + " COLLATE NOCASE ASC",
-                null
-        );
-        ArrayList<Item> items = new ArrayList<>();
-        while(c.moveToNext()) {
-            items.add(new Item(
-                    c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
-            ));
-        }
-        c.close();
-        database.close();
-
-        return items;
-    }
-
-    public ArrayList<Item> getAllItemsDescCategory() {
-        SQLiteDatabase database = this.getReadableDatabase();
-        Cursor c = database.query(
-                DbReferences.TABLE_NAME_ITEMS,
-                null,
-                null,
-                null,
-                null,
-                null,
-                DbReferences.COLUMN_ITEM_CATEGORY + " COLLATE NOCASE DESC",
-                null
-        );
-        ArrayList<Item> items = new ArrayList<>();
-        while(c.moveToNext()) {
-            items.add(new Item(
-                    c.getLong(c.getColumnIndexOrThrow(DbReferences.ITEM_ID)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_NAME)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_CATEGORY)),
-                    c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ITEM_LOCAL_DATE))
-            ));
-        }
-        c.close();
-        database.close();
-
-        return items;
-    }
-
     public ArrayList<Item> getAllItemsAscExpiration() {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor c = database.query(
@@ -347,31 +293,6 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public ArrayList<ItemList> filterListsByName(String name) {
-        SQLiteDatabase database = this.getReadableDatabase();
-
-        String queryString = "SELECT * FROM " + DbReferences.TABLE_NAME_LISTS + " WHERE " + DbReferences.COLUMN_LIST_NAME + " = ? ";
-        Cursor c = database.rawQuery(queryString, new String[] {name});
-
-        ArrayList<ItemList> lists = new ArrayList<>();
-
-        if (c.moveToFirst()) {
-            do{
-                ItemList list = new ItemList(
-                        c.getLong(c.getColumnIndexOrThrow(DbReferences.LIST_ID)),
-                        c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_NAME)),
-                        c.getLong(c.getColumnIndexOrThrow(DbReferences.COLUMN_LIST_ITEMS_ID))
-                );
-
-                lists.add(list);
-            }while (c.moveToNext());
-        }
-
-        c.close();
-
-        return lists;
-    }
-
     public Item searchItem(String name, String expiration) {
         SQLiteDatabase database = this.getReadableDatabase();
         Item item = new Item();
@@ -420,22 +341,6 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         String query = "UPDATE " + DbReferences.TABLE_NAME_ITEMS + " SET " + DbReferences.COLUMN_ITEM_LOCAL_DATE + " = '" + newDate + "' WHERE " + DbReferences.ITEM_ID + " = '" + id + "'"
                 + " AND " + DbReferences.COLUMN_ITEM_LOCAL_DATE + " = '" + oldDate + "'";
-
-        database.execSQL(query);
-    }
-
-    public void updateListName(String newName, long id, String oldName) {
-        SQLiteDatabase database = this.getWritableDatabase();
-        String query = "UPDATE " + DbReferences.TABLE_NAME_LISTS + " SET " + DbReferences.COLUMN_LIST_NAME + " = '" + newName + "' WHERE " + DbReferences.LIST_ID + " = '" + id + "'"
-                + " AND " + DbReferences.COLUMN_LIST_NAME + " = '" + oldName + "'";
-
-        database.execSQL(query);
-    }
-
-    public void updateListItems(String newItems, long id, String oldItems) {
-        SQLiteDatabase database = this.getWritableDatabase();
-        String query = "UPDATE " + DbReferences.TABLE_NAME_LISTS + " SET " + DbReferences.COLUMN_LIST_ITEMS_ID + " = '" + newItems + "' WHERE " + DbReferences.LIST_ID + " = '" + id + "'"
-                + " AND " + DbReferences.COLUMN_LIST_ITEMS_ID + " = '" + oldItems + "'";
 
         database.execSQL(query);
     }
@@ -494,8 +399,8 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public ArrayList<Item> getItemsInList(String listName){
         SQLiteDatabase database = this.getReadableDatabase();
-        ArrayList<Item> items = new ArrayList<Item>();
-        ArrayList<Long> id = new ArrayList<Long>();
+        ArrayList<Item> items = new ArrayList<>();
+        ArrayList<Long> id = new ArrayList<>();
 
         Cursor c = database.query(
                 DbReferences.TABLE_NAME_LISTS,
