@@ -3,6 +3,8 @@ package com.mobdeve.s16.bainto.john.freshnesscheck;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Comparator;
+
 public class Item implements Parcelable {
     private Long id;
     private String name, category;
@@ -94,6 +96,13 @@ public class Item implements Parcelable {
         @Override
         public Item[] newArray(int size) {
             return new Item[0];
+        }
+    };
+
+    public static Comparator<Item> COMPARE_BY_EXPIRATION = new Comparator<Item>() {
+        @Override
+        public int compare(Item i1, Item i2) {
+            return i1.getDate().compareTo(i2.getDate());
         }
     };
 }
