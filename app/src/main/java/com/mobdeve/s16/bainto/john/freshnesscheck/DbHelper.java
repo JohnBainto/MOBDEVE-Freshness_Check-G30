@@ -346,6 +346,7 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
 
         database.delete(DbReferences.TABLE_NAME_ITEMS, DbReferences.ITEM_ID + "=?", new String[] {String.valueOf(id)});
+        database.delete(DbReferences.TABLE_NAME_LISTS, DbReferences.COLUMN_LIST_ITEMS_ID + "=?", new String[] {String.valueOf(id)});
 
 //        database.close();
     }
