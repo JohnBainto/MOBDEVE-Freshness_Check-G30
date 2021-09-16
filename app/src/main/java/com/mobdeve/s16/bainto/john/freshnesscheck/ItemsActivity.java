@@ -80,7 +80,7 @@ public class ItemsActivity extends AppCompatActivity {
                     public void run() {
                         dbHelper = dbHelper.getInstance(ItemsActivity.this);
                         dbHelper.deleteItemRow(item.getName());
-                        Log.d(TAG, "Deleted item: " + item.getName());
+                        Log.d(TAG, "Remaining items: " + getItemNames(dbHelper.getAllItemsDefault()));
                         finish();
                     }
                 });
@@ -95,5 +95,15 @@ public class ItemsActivity extends AppCompatActivity {
         itemName.setText(item.getName());
         itemCategory.setText(item.getCategory());
         itemExpiration.setText(item.getDate());
+    }
+
+    //for debugging
+    public ArrayList<String> getItemNames(ArrayList<Item> data) {
+        ArrayList<String> names = new ArrayList<>();
+
+        for(int i = 0; i < data.size(); i++)
+            names.add(data.get(i).getName());
+
+        return names;
     }
 }
